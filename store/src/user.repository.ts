@@ -5,4 +5,7 @@ export class UserRepository {
     this.users.push(user);
     console.log(this.users);
   }
+  async getAllUsers(): Promise<string[]> {
+    return this.users;
+  }
 }
