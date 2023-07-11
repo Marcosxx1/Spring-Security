@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
-import { UserController } from './user.controller';
+import { UserModule } from './user/user.module';
 
 @Module({
-  imports: [],
-  controllers: [UserController],
+  imports: [UserModule],
   providers: [],
 })
 // eslint-disable-next-line prettier/prettier
