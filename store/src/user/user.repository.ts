@@ -17,7 +17,6 @@ export class UserRepository {
 
   async addUser(user: CreateUserDTO) {
     this.users.push(user);
-    console.log(this.users);
   }
   async getAllUsers(): Promise<CreateUserDTO[]> {
     return this.users;
