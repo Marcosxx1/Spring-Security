@@ -4,11 +4,11 @@ import { Injectable } from '@nestjs/common';
 export class ProductRepository {
   private products: string[] = [];
 
-  async addProduct(product: string): Promise<void> {
+  async addProduct(product: string) {
     this.products.push(product);
   }
 
-  async getProducts(): Promise<string[]> {
+  async getProducts() {
     return this.products;
   }
 }
