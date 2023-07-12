@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { CreateUserDTO } from './dto/CreateUser.dto';
 
 /* Um privider é um serviço que pode ser injetado em outros serviços,
  * como por exemplo o UserRepository, que é um serviço que tem acesso a um
@@ -12,13 +13,13 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class UserRepository {
-  private users: string[] = [];
+  private users: CreateUserDTO[] = [];
 
-  async addUser(user: string) {
+  async addUser(user: CreateUserDTO) {
     this.users.push(user);
     console.log(this.users);
   }
-  async getAllUsers(): Promise<string[]> {
+  async getAllUsers(): Promise<CreateUserDTO[]> {
     return this.users;
   }
 }
