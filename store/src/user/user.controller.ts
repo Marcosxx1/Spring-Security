@@ -1,10 +1,10 @@
 import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
-import { UserRepository } from '../user.repository';
+import { UserRepository } from './user.repository';
 
 @Controller('/users')
 export class UserController {
-  private userRepositry = new UserRepository();
-
+  // eslint-disable-next-line prettier/prettier
+  constructor(private userRepositry: UserRepository) { }
   @Post()
   async createUser(@Body() userData) {
     this.userRepositry.addUser(userData);
