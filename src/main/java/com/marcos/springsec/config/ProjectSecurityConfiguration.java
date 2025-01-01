@@ -3,8 +3,12 @@ package com.marcos.springsec.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 import static com.marcos.springsec.constants.PathConstants.*;
@@ -49,5 +53,18 @@ public class ProjectSecurityConfiguration {
         http.formLogin(withDefaults()); // http.formLogin(AbstractHttpConfigurer::disable); sempre que formos invocar o método devemos passar a configuração obrigatória por meio de lambdas ou Method References (.disable() está depreciado) http.formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.disable()). Sempre quando ativamos o formLogin a extração das credenciais da request será realizada pela classe UsernamePasswordAuthenticationFilter com o método Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response). Mas caso utilizarmos o http basic style of login, será o BasicAuthenticationFilter em doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
         http.httpBasic(withDefaults()); //http.httpBasic(HttpBasicConfigurer::disable);
         return http.build();
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        UserDetails user = User.withUsername("user").password("{noop}12345").authorities("read").build();
+        UserDetails admin = User.withUsername("admin").password("{bcrypt}$2a$12$DTzG57.5qOiRdyQrtelWx.Vu5ySjiC8Nd6b2Hp.IzsMtNVasd6prW").authorities("admin").build();
+
+        return new InMemoryUserDetailsManager(user, admin);
+    }
+
+    @Bean
+    PasswordEncoder passwordEncoder(){
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 }
