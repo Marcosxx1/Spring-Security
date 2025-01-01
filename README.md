@@ -1,9 +1,12 @@
 # Projeto: Aprendizado de Spring Security
 
 ## Índice
-- [Introdução ao Projeto](#introdu%C3%A7%C3%A3o-ao-projeto)
-- [Configurações de Segurança](#configura%C3%A7%C3%B5es-de-seguran%C3%A7a)
+- [Introdução ao Projeto](#introdução-ao-projeto)
+- [Configurações de Segurança](#configurações-de-segurança)
     - [ProjectSecurityConfiguration](#projectsecurityconfiguration)
+    - [Gerenciamento de Usuários](#gerenciamento-de-usuários)
+    - [Verificação de Senhas Comprometidas](#verificação-de-senhas-comprometidas)
+    - [Hierarquia de Interfaces de Usuário](#hierarquia-de-interfaces-de-usuário)
 
 ---
 
@@ -65,5 +68,74 @@ public class ProjectSecurityConfiguration {
 
 ---
 
-Classe disponível no pacote `com.marcos.springsec.config`.
+### Gerenciamento de Usuários
+
+No Spring Security, é possível definir múltiplos usuários em memória para testes, utilizando `InMemoryUserDetailsManager` e a classe `UserDetails`. Este recurso é recomendado apenas para fins de desenvolvimento ou teste e não deve ser utilizado em produção.
+
+#### Exemplo de Implementação
+
+```java
+@Bean
+public InMemoryUserDetailsManager userDetailsManager() {
+    UserDetails user1 = User.withDefaultPasswordEncoder()
+            .username("user1")
+            .password("password1")
+            .roles("USER")
+            .build();
+
+    UserDetails user2 = User.withDefaultPasswordEncoder()
+            .username("admin")
+            .password("password2")
+            .roles("ADMIN")
+            .build();
+
+    return new InMemoryUserDetailsManager(user1, user2);
+}
+```
+
+---
+
+### Verificação de Senhas Comprometidas
+
+O Spring Security 6.3 introduziu o `CompromisedPasswordChecker`, que permite verificar se uma senha foi comprometida em violações de dados conhecidas. Essa funcionalidade é uma camada extra de segurança.
+
+#### Exemplo de Configuração
+
+```java
+@Bean
+public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+}
+
+@Bean
+public CompromisedPasswordChecker passwordChecker() {
+    return new CompromisedPasswordChecker();
+}
+```
+
+---
+
+### Hierarquia de Interfaces de Usuário
+
+A representação de um usuário no Spring Security é feita através da interface `UserDetails`. Existem diferentes interfaces relacionadas para gerenciamento de usuários:
+
+- **`UserDetailsService`**: Interface básica para carregar detalhes de um usuário.
+    - Método principal: `UserDetails loadUserByUsername(String username)`.
+
+- **`UserDetailsManager`**: Extensão de `UserDetailsService` com métodos adicionais para gerenciamento de usuários.
+    - Principais métodos:
+        - `void createUser(UserDetails user)`
+        - `void updateUser(UserDetails user)`
+        - `void deleteUser(String username)`
+        - `void changePassword(String oldPassword, String newPassword)`
+        - `boolean userExists(String username)`
+
+- **Implementações Padrão**:
+    1. `InMemoryUserDetailsManager`
+    2. `JdbcUserDetailsManager`
+    3. `LdapUserDetailsManager`
+
+---
+
+Classe disponível no pacote `com.marcos.springsec.config`. 
 
