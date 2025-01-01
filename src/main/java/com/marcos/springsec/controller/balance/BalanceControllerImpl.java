@@ -8,7 +8,7 @@ public class BalanceControllerImpl implements BalanceController{
 
 
     @Override
-    @GetMapping("myBallance")
+    @GetMapping("/myBallance")
     public String getBalanceDetails() {
         return "Here are the balance details from the DB";
     }
