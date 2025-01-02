@@ -19,23 +19,15 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class ProjectSecurityConfiguration {
 
     private final String[] AUTHENTICATED_PATHS = {ACCOUNT, BALANCE, CARDS, LOANS};
+    private final String[] ALLOWED_PATHS = {CONTACT, NOTICES, ERROR};
 
-    private final String[] ALLOWED_PATHS = {CONTACT, NOTICES, "/error"};
-
-    /**
-     * Configura a cadeia de filtros de segurança do Spring Security.
-     *
-     * @param http objeto HttpSecurity usado para configurar as regras de segurança.
-     * @return um SecurityFilterChain configurado.
-     * @throws Exception caso ocorra algum erro na configuração.
-     */
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((request) -> request
                 .requestMatchers(AUTHENTICATED_PATHS).authenticated()
                 .requestMatchers(ALLOWED_PATHS).permitAll());
-        http.formLogin(withDefaults()); // http.formLogin(AbstractHttpConfigurer::disable); sempre que formos invocar o método devemos passar a configuração obrigatória por meio de lambdas ou Method References (.disable() está depreciado) http.formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.disable()). Sempre quando ativamos o formLogin a extração das credenciais da request será realizada pela classe UsernamePasswordAuthenticationFilter com o método Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response). Mas caso utilizarmos o http basic style of login, será o BasicAuthenticationFilter em doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-        http.httpBasic(withDefaults()); //http.httpBasic(HttpBasicConfigurer::disable);
+        http.formLogin(withDefaults());
+        http.httpBasic(withDefaults());
         return http.build();
     }
 
