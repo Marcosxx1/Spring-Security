@@ -13,6 +13,9 @@
       - [Papel do Authentication](#papel-do-authentication)
   - [UserDetails](#userdetails)
     - [Papel do UserDetails](#papel-do-userdetails)
+- [Autenticação utilizando jdbcUserDetailsManager](#autenticação-utilizando-jdbcuserdetailsmanager)
+- [implementação de UserDetailsService para lógica de recuperação customizada](#implementação-de-userdetailsservice-para-logica-de-recuperacao-customizada)
+- [Fluxo sequencial utilizando nossa propria implementação de UserDetailsService](#fluxo-sequencial-utilizando-nossa-própria-implementação-de-userdetailsservice)
 ---
 
 ## Introdução ao Projeto
@@ -165,20 +168,22 @@ as permissões adequadas.
 ```java
 class Ex{
 
-    UsernamePasswordAuthenticationToken authenticationToken =
-            new UsernamePasswordAuthenticationToken("user", "password", List.of(new SimpleGrantedAuthority("ROLE_USER")));
+    public static void main(String[] args) {
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken("user", "password", List.of(new SimpleGrantedAuthority("ROLE_USER")));
 
-System.out.println(authenticationToken.getName()); // Retorna o nome do principal
-System.out.println(authenticationToken.getPrincipal()); // Retorna o objeto principal (geralmente UserDetails)
-System.out.println(authenticationToken.getAuthorities()); // Retorna as autoridades (roles)
-System.out.println(authenticationToken.getCredentials()); // Retorna as credenciais (ex.: senha)
-System.out.println(authenticationToken.getDetails()); // Detalhes adicionais (como IP)
-System.out.println(authenticationToken.isAuthenticated()); // Verifica se está autenticado
+        System.out.println(authenticationToken.getName()); // Retorna o nome do principal
+        System.out.println(authenticationToken.getPrincipal()); // Retorna o objeto principal (geralmente UserDetails)
+        System.out.println(authenticationToken.getAuthorities()); // Retorna as autoridades (roles)
+        System.out.println(authenticationToken.getCredentials()); // Retorna as credenciais (ex.: senha)
+        System.out.println(authenticationToken.getDetails()); // Detalhes adicionais (como IP)
+        System.out.println(authenticationToken.isAuthenticated()); // Verifica se está autenticado
 
-// Configurações adicionais
-authenticationToken.setAuthenticated(true);
-authenticationToken.eraseCredentials(); // Remove informações sensíveis como senha
+        // Configurações adicionais
+        authenticationToken.setAuthenticated(true);
+        authenticationToken.eraseCredentials(); // Remove informações sensíveis como senha
 
+    }
 }
 ```
 
@@ -210,19 +215,25 @@ A interface `UserDetails` é usada para representar as informações de um usuá
 
 ### Métodos Importantes de `User`
 ```java
-UserDetails user = User.builder()
-        .username("john_doe")
-        .password(new BCryptPasswordEncoder().encode("password"))
-        .roles("USER")
-        .build();
 
-System.out.println(user.getUsername()); // Nome de usuário
-System.out.println(user.getPassword()); // Senha codificada
-System.out.println(user.getAuthorities()); // Autoridades atribuídas ao usuário
-System.out.println(user.isAccountNonExpired()); // Verifica se a conta está expirada
-System.out.println(user.isAccountNonLocked()); // Verifica se a conta está bloqueada
-System.out.println(user.isCredentialsNonExpired()); // Verifica se as credenciais estão expiradas
-System.out.println(user.isEnabled()); // Verifica se o usuário está habilitado
+class Ex{
+    public static void main(String[] args) {
+
+        UserDetails user = User.builder()
+                .username("john_doe")
+                .password(new BCryptPasswordEncoder().encode("password"))
+                .roles("USER")
+                .build();
+
+        System.out.println(user.getUsername()); // Nome de usuário
+        System.out.println(user.getPassword()); // Senha codificada
+        System.out.println(user.getAuthorities()); // Autoridades atribuídas ao usuário
+        System.out.println(user.isAccountNonExpired()); // Verifica se a conta está expirada
+        System.out.println(user.isAccountNonLocked()); // Verifica se a conta está bloqueada
+        System.out.println(user.isCredentialsNonExpired()); // Verifica se as credenciais estão expiradas
+        System.out.println(user.isEnabled()); // Verifica se o usuário está habilitado
+    }
+}
 ```
 
 ### Papel do `UserDetails`
@@ -273,3 +284,184 @@ public class SecurityConfig {
     }
 }
 ```
+
+## Autenticação utilizando JdbcUserDetailsManager
+
+Ao invés de criarmos usuários em memória, podemos armazená-los no banco de dados utilizando o `JdbcUserDetailsManager`. Isso nos permite gerenciar credenciais e permissões diretamente no banco, de forma mais escalável.
+
+### Configuração básica
+Para usar o `JdbcUserDetailsManager`, criamos um bean no arquivo de configuração:
+
+```java
+@Bean
+public UserDetailsService userDetailsService(DataSource dataSource) {
+    return new JdbcUserDetailsManager(dataSource);
+}
+```
+
+Com essa configuração, o Spring Security espera que o banco de dados contenha as tabelas necessárias para armazenar usuários e suas autoridades (permissões). Essas tabelas podem ser criadas manualmente ou geradas automaticamente com base no esquema esperado pelo `JdbcUserDetailsManager`.
+
+### Esquema de tabelas esperado
+Por padrão, o `JdbcUserDetailsManager` utiliza as tabelas `users` e `authorities` com as seguintes definições básicas:
+
+#### Tabela `users`
+```sql
+CREATE TABLE users (
+    username VARCHAR(50) NOT NULL PRIMARY KEY,
+    password VARCHAR(100) NOT NULL,
+    enabled BOOLEAN NOT NULL
+);
+```
+
+#### Tabela `authorities`
+```sql
+CREATE TABLE authorities (
+    username VARCHAR(50) NOT NULL,
+    authority VARCHAR(50) NOT NULL,
+    FOREIGN KEY (username) REFERENCES users(username)
+);
+```
+
+### Inserção de dados no banco de dados
+Após criar as tabelas, inserimos os usuários e suas autoridades manualmente ou via script. Por exemplo:
+
+```sql
+-- Inserir usuário
+INSERT INTO users (username, password, enabled) VALUES ('user1', '{bcrypt}$2a$10$Wq7gJnVxzP1uIzDjH7VbAe3RLefpssRV18y6qFZHD9BoqVQ44.sni', true);
+
+-- Inserir autoridade
+INSERT INTO authorities (username, authority) VALUES ('user1', 'ROLE_USER');
+```
+
+O campo `password` deve conter uma senha codificada (ex.: BCrypt). Podemos usar um `PasswordEncoder` para gerar essas senhas no Java.
+
+---
+
+## UserDetailsService implementation para lógica de recuperação customizada
+
+Quando precisamos carregar detalhes de usuários com base em nossas próprias tabelas, colunas ou lógica, devemos criar uma implementação customizada de `UserDetailsService`. Isso é útil para integrar o Spring Security com um modelo de dados específico do negócio.
+
+### Interface personalizada
+Criamos uma interface que estenda `UserDetailsService`:
+
+```java
+public interface ProjectUserDetailsService extends UserDetailsService {
+}
+```
+
+### Implementação customizada
+Em seguida, implementamos a lógica personalizada no método `loadUserByUsername`:
+
+```java
+@Service
+@RequiredArgsConstructor
+public class ProjectUserDetailsServiceImpl implements ProjectUserDetailsService {
+
+    private final CustomerService customerService;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        // Buscar o cliente no banco de dados usando um serviço específico
+        var customer = customerService.getCustomerEmail(username);
+
+        // Converter o papel do cliente em GrantedAuthority
+        List<GrantedAuthority> grantedAuthorities = List.of(
+            new SimpleGrantedAuthority(customer.getRole())
+        );
+
+        // Retornar o objeto User do Spring Security
+        return new User(
+            customer.getEmail(),
+            customer.getPassword(),
+            grantedAuthorities
+        );
+    }
+}
+```
+
+### Integração com o banco de dados
+A lógica de busca é delegada ao `CustomerService`, que se comunica diretamente com o repositório:
+
+```java
+@Service
+@RequiredArgsConstructor
+public class CustomerServiceImpl implements CustomerService {
+
+    private final CustomerRepository customerRepository;
+
+    @Override
+    public Customer getCustomerEmail(String email) {
+        return customerRepository.findByEmail(email).orElseThrow(
+            () -> new UsernameNotFoundException("Usuário não encontrado com email: " + email)
+        );
+    }
+}
+```
+
+### Exemplo de esquema para uma tabela customizada
+Caso utilizemos uma tabela personalizada, ela pode ser estruturada assim:
+
+```sql
+CREATE TABLE customers (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL,
+    role VARCHAR(50) NOT NULL
+);
+```
+## Fluxo Sequencial utilizando nossa Própria Implementação de UserDetailsService
+
+### Passo a Passo do Fluxo de Autenticação
+
+1. **Usuário tenta acessar a página segura**\
+   O usuário tenta acessar um recurso protegido na aplicação, como uma página que exige autenticação.
+
+2. **Filtros do Spring identificam que o usuário não está logado**\
+   Filtros como `AuthorizationFilter`, `AbstractAuthenticationProcessingFilter` e `DefaultLoginPageGeneratingFilter` verificam que o usuário não possui uma sessão ativa e o redirecionam para a página de login.
+
+3. **Usuário envia suas credenciais**\
+   O usuário insere o nome de usuário e senha e submete a requisição de login, que é interceptada pelos filtros de autenticação do Spring Security.
+
+4. **Requisição interceptada e credenciais processadas**\
+   Filtros como `UsernamePasswordAuthenticationFilter` extraem o nome de usuário e senha da requisição e criam um objeto `UsernamePasswordAuthenticationToken`. Esse objeto é uma implementação da interface `Authentication`.
+
+5. **ProviderManager autentica o token**\
+   O `ProviderManager`, que é uma implementação de `AuthenticationManager`, verifica qual provedor de autenticação suporta o tipo do token criado. Normalmente, o método `authenticate()` do `DaoAuthenticationProvider` é invocado.
+
+6. **Carregamento de detalhes do usuário**\
+   O `DaoAuthenticationProvider` chama o método `loadUserByUsername` da implementação customizada de `UserDetailsService` (como `ProjectUserDetailsServiceImpl`) para carregar os detalhes do usuário a partir do banco de dados ou outra fonte.
+
+    - **Exemplo de implementação:**
+      ```java
+      @Service
+      @RequiredArgsConstructor
+      public class ProjectUserDetailsServiceImpl implements UserDetailsService {
+ 
+          private final CustomerService customerService;
+ 
+          @Override
+          public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+              var customer = customerService.getCustomerEmail(username);
+              List<GrantedAuthority> authorities = List.of(
+                  new SimpleGrantedAuthority(customer.getRole())
+              );
+              return new User(customer.getEmail(), customer.getPassword(), authorities);
+          }
+      }
+      ```
+
+7. **Validação das credenciais**\
+   Após carregar os detalhes do usuário, o `DaoAuthenticationProvider` utiliza um `PasswordEncoder` para comparar a senha informada com a senha armazenada. Se as senhas coincidirem, a autenticação é considerada bem-sucedida.
+
+8. **Objeto de autenticação retornado**\
+   Um objeto `Authentication` contendo os detalhes do sucesso ou falha da autenticação é retornado para o `ProviderManager`.
+
+9. **Resultado da autenticação avaliado pelo ProviderManager**\
+   O `ProviderManager` verifica se a autenticação foi bem-sucedida:
+
+    - Se não for, tenta outros provedores de autenticação disponíveis.
+    - Caso contrário, retorna os detalhes de autenticação para os filtros.
+
+10. **Sessão autenticada armazenada**\
+    O objeto `Authentication` é armazenado no `SecurityContext` pelo filtro apropriado para uso futuro na aplicação. Uma resposta apropriada (como redirecionamento ou exibição de conteúdo) é enviada ao usuário.
+

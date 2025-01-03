@@ -33,5 +33,3 @@ CREATE TABLE `customer`(
 
 insert into `customer` (email, password ,role ) VALUES ('marcos@marcos.com', '{noop}12345', 'read');
 insert into `customer` (email, password ,role ) VALUES ('admin@admin.com', '{noop}12345', 'read');
-
-alter
