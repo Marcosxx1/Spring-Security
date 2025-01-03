@@ -51,10 +51,12 @@ A classe utiliza a anotação `@Configuration`, que indica que define um ou mais
 public class ProjectSecurityConfiguration {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .formLogin(withDefaults())
-            .httpBasic(withDefaults());
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests((request) -> request
+                .requestMatchers(AUTHENTICATED_PATHS).authenticated()
+                .requestMatchers(ALLOWED_PATHS).permitAll());
+        http.formLogin(withDefaults());
+        http.httpBasic(withDefaults());
         
         // Configurações adicionais podem ser incluídas aqui.
         return http.build();

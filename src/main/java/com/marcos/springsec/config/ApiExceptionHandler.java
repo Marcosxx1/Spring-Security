@@ -6,8 +6,6 @@ import com.marcos.springsec.exception.exeptions.CustomerAlreadyExistsException;
 import com.marcos.springsec.exception.exeptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.support.MessageSourceAccessor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,9 +14,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @RequiredArgsConstructor
 @Slf4j
 public class ApiExceptionHandler {
-
-    private final MessageSourceAccessor messageSourceAccessor;
-
 
     @ExceptionHandler(CustomHttpException.class)
     public ResponseEntity<ErrorResponse> handleCustomHttpException(CustomHttpException ex) {
