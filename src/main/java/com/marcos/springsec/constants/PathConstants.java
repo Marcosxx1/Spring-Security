@@ -12,4 +12,5 @@ public class PathConstants {
     public static final String LOANS = "/myLoans";
     public static final String NOTICES = "/notices";
     public static final String ERROR = "/error";
+    public static final String CUSTOMER = "/customer";
 }
