@@ -3,6 +3,7 @@ package com.marcos.springsec.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -15,10 +16,11 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class ProjectSecurityConfiguration {
 
     private final String[] AUTHENTICATED_PATHS = {ACCOUNT, BALANCE, CARDS, LOANS};
-    private final String[] ALLOWED_PATHS = {CONTACT, NOTICES, ERROR};
+    private final String[] ALLOWED_PATHS = {CONTACT, NOTICES, ERROR,CUSTOMER};
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf(AbstractHttpConfigurer::disable); // Precisamos desabilitar o csrf para poder fazer requisições que não sejam GET para rotas desprotegidas
         http.authorizeHttpRequests((request) -> request
                 .requestMatchers(AUTHENTICATED_PATHS).authenticated()
                 .requestMatchers(ALLOWED_PATHS).permitAll());
@@ -37,10 +39,10 @@ public class ProjectSecurityConfiguration {
     /**
      * O método `userDetailsService(DataSource dataSource)` é comentado nesta configuração
      * porque já utilizamos uma implementação personalizada de {@link org.springframework.security.core.userdetails.UserDetailsService}.
-     *
+     * <p>
      * Essa decisão foi tomada para evitar conflitos com a configuração automática do Spring Security,
      * que criaria um `JdbcUserDetailsManager` baseado em um esquema/tabela pré-definida.
-     *
+     * <p>
      * Ao usar uma implementação personalizada como {@link com.marcos.springsec.service.userdetails.ProjectUserDetailsServiceImpl},
      * temos as seguintes vantagens:
      *
@@ -52,14 +54,14 @@ public class ProjectSecurityConfiguration {
      *   <li><strong>Coerência:</strong> Centralizamos a lógica de autenticação em uma única implementação,
      *   evitando redundância ou inconsistências na configuração.</li>
      * </ul>
-     *
+     * <p>
      * Caso desejássemos utilizar a abordagem padrão baseada no banco de dados,
      * o método poderia ser ativado novamente, mas isso exigiria um esquema/tabela compatível com as expectativas do `JdbcUserDetailsManager`.
      *
      * @param dataSource Fonte de dados usada para conectar ao banco de dados caso o método fosse utilizado.
      * @return Um {@link org.springframework.security.core.userdetails.UserDetailsService} que utiliza o banco de dados para autenticação.
      */
-    public void explicacao(){};
+    public void explicacao() {};
 
 /*    @Bean
     UserDetailsService userDetailsService(DataSource dataSource) {
