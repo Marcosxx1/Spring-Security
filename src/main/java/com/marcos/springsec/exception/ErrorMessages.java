@@ -11,4 +11,7 @@ public class ErrorMessages {
 
     public static final String ERROR_RESOURCE_ALREADY_EXISTS_WITH_IDENTIFIER_TITLE = "error.already-exists-with-identifier.title";
     public static final String ERROR_RESOURCE_ALREADY_EXISTS_WITH_IDENTIFIER_DETAIL = "error.already-exists-with-identifier.detail";
+
+    public static final String VALIDATION_ERROR_TITLE = "validation-error.title";
+    public static final String VALIDATION_ERROR_DETAIL = "validation-error.detail";
 }

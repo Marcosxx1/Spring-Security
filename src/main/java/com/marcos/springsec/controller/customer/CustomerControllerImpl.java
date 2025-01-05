@@ -2,6 +2,7 @@ package com.marcos.springsec.controller.customer;
 
 import com.marcos.springsec.domain.dto.internal.CustomerRegistrationRequest;
 import com.marcos.springsec.service.customer.CustomerService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,7 +16,7 @@ public class CustomerControllerImpl implements CustomerController {
 
     @Override
     @PostMapping
-    public String registerUser(@RequestBody CustomerRegistrationRequest customerRegistrationRequest) {
+    public String registerUser(@Valid @RequestBody CustomerRegistrationRequest customerRegistrationRequest) {
         return userService.saveCustomer(customerRegistrationRequest);
     }
 }

@@ -1,4 +1,4 @@
-package com.marcos.springsec.domain.dto.internal;
+package com.marcos.springsec.domain.dto.errors;
 
 
 

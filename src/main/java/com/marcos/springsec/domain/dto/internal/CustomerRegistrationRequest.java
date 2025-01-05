@@ -1,5 +1,6 @@
 package com.marcos.springsec.domain.dto.internal;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;
 import lombok.Data;
 
@@ -8,9 +9,12 @@ import lombok.Data;
 // TODO Adicionar anotações do swagger
 public class CustomerRegistrationRequest {
 
+    @NotEmpty(message = "email cannot be empty")
     private String email;
 
+    @NotEmpty(message = "password cannot be empty")
     private String password;
 
+    @NotEmpty(message = "role cannot be empty")
     private String role;
 }
