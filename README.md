@@ -16,8 +16,11 @@
 - [Autenticação utilizando jdbcUserDetailsManager](#autenticação-utilizando-jdbcuserdetailsmanager)
 - [implementação de UserDetailsService para lógica de recuperação customizada](#implementação-de-userdetailsservice-para-logica-de-recuperacao-customizada)
 - [Fluxo sequencial utilizando nossa propria implementação de UserDetailsService](#fluxo-sequencial-utilizando-nossa-própria-implementação-de-userdetailsservice)
+- [Formas Diferentes de Privacidade de Dados](#formas-diferentes-de-privacidade-de-dados)
+- [Múltiplas Estratégias com `DelegatingPasswordEncoder`](#múltiplas-estratégias-com-delegatingpasswordencoder)
 ---
 
+ 
 ## Introdução ao Projeto
 
 (WIP) Este projeto foi criado com o objetivo de aprender e praticar o uso de Spring Security, desenvolvimento de backend com Spring Boot e frontend com Angular. Além disso, o projeto serve como referência para reutilizar trechos de código documentados.
@@ -467,3 +470,124 @@ CREATE TABLE customers (
 10. **Sessão autenticada armazenada**\
     O objeto `Authentication` é armazenado no `SecurityContext` pelo filtro apropriado para uso futuro na aplicação. Uma resposta apropriada (como redirecionamento ou exibição de conteúdo) é enviada ao usuário.
 
+## Formas Diferentes de Privacidade de Dados
+
+## 1. Encoding
+Encoding é o processo de converter dados de uma forma para outra, sem relação com criptografia. Ele não deve ser utilizado para proteger dados, pois:
+- Não envolve segredos e é completamente reversível.
+- Exemplos comuns de encoding: **ASCII**, **BASE64**, **UNICODE**.
+
+### Exemplo de Uso no Java:
+```java
+import java.util.Base64;
+
+public class EncodingExample {
+    public static void main(String[] args) {
+        String originalInput = "password123";
+        String encodedString = Base64.getEncoder().encodeToString(originalInput.getBytes());
+
+        System.out.println("Encoded: " + encodedString);
+
+        String decodedString = new String(Base64.getDecoder().decode(encodedString));
+        System.out.println("Decoded: " + decodedString);
+    }
+}
+```
+
+---
+
+## 2. Encryption
+A encriptação transforma dados para garantir a **confidencialidade** e requer o uso de uma **chave** para reverter o processo (decriptação). A segurança depende da confidencialidade da chave.
+
+### Exemplo de Uso no Java:
+```java
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+
+public class EncryptionExample {
+    public static void main(String[] args) throws Exception {
+        String data = "password123";
+
+        // Gerar uma chave secreta
+        KeyGenerator keyGen = KeyGenerator.getInstance("AES");
+        keyGen.init(128);
+        SecretKey secretKey = keyGen.generateKey();
+
+        // Encriptar
+        Cipher cipher = Cipher.getInstance("AES");
+        cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+        byte[] encryptedData = cipher.doFinal(data.getBytes());
+        System.out.println("Encrypted: " + new String(encryptedData));
+
+        // Decriptar
+        cipher.init(Cipher.DECRYPT_MODE, secretKey);
+        byte[] decryptedData = cipher.doFinal(encryptedData);
+        System.out.println("Decrypted: " + new String(decryptedData));
+    }
+}
+```
+
+---
+
+## 3. Hashing
+Hashing converte dados em um valor hash de forma irreversível. Ele é utilizado para verificar se o *input* corresponde ao valor original sem precisar armazenar os dados originais.
+
+### Exemplo de Uso no Java com BCrypt:
+```java
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+public class HashingExample {
+    public static void main(String[] args) {
+        // Podemos também defir um @Bean de password encoder para deixarmos disponível no boot da aplicação
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String rawPassword = "password123";
+        
+        // Gerar hash
+        String hashedPassword = passwordEncoder.encode(rawPassword);
+        System.out.println("Hashed: " + hashedPassword);
+
+        // Verificar hash
+        boolean matches = passwordEncoder.matches(rawPassword, hashedPassword);
+        System.out.println("Password matches: " + matches);
+    }
+}
+```
+
+---
+
+## Múltiplas Estratégias com `DelegatingPasswordEncoder`
+O `DelegatingPasswordEncoder` permite gerenciar múltiplos tipos de hash simultaneamente, sendo útil para migração de algoritmos de hashing.
+
+### Como Funciona:
+- Durante o cadastro, o `DelegatingPasswordEncoder` usa o *encoder* padrão e adiciona o prefixo correspondente ao algoritmo.
+- Durante o login, o método `matches()` delega a validação ao *encoder* correto com base no prefixo da senha (ex.: `{bcrypt}`).
+
+### Exemplo de Configuração no Spring Boot:
+```java
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+
+public class DelegatingPasswordEncoderExample {
+    public static void main(String[] args) {
+        // Criar o DelegatingPasswordEncoder
+        PasswordEncoder delegatingPasswordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+
+        String rawPassword = "password123";
+
+        // Gerar hash com o encoder padrão ({bcrypt})
+        String encodedPassword = delegatingPasswordEncoder.encode(rawPassword);
+        System.out.println("Encoded: " + encodedPassword);
+
+        // Validar a senha
+        boolean matches = delegatingPasswordEncoder.matches(rawPassword, encodedPassword);
+        System.out.println("Password matches: " + matches);
+    }
+}
+```
+
+### Explicação:
+- O `DelegatingPasswordEncoder` usa o prefixo (ex.: `{bcrypt}`) para determinar qual `PasswordEncoder` utilizar.
+- Ele permite combinar algoritmos antigos e novos durante uma migração de sistema.
+
+---

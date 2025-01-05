@@ -16,7 +16,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class ProjectSecurityConfiguration {
 
     private final String[] AUTHENTICATED_PATHS = {ACCOUNT, BALANCE, CARDS, LOANS};
-    private final String[] ALLOWED_PATHS = {CONTACT, NOTICES, ERROR,CUSTOMER};
+    private final String[] ALLOWED_PATHS = {CONTACT, NOTICES, ERROR, CUSTOMER};
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -33,7 +33,6 @@ public class ProjectSecurityConfiguration {
     PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
-
 
 
     /**
@@ -61,7 +60,10 @@ public class ProjectSecurityConfiguration {
      * @param dataSource Fonte de dados usada para conectar ao banco de dados caso o método fosse utilizado.
      * @return Um {@link org.springframework.security.core.userdetails.UserDetailsService} que utiliza o banco de dados para autenticação.
      */
-    public void explicacao() {};
+    public void explicacao() {
+    }
+
+    ;
 
 /*    @Bean
     UserDetailsService userDetailsService(DataSource dataSource) {
