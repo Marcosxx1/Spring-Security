@@ -591,3 +591,143 @@ public class DelegatingPasswordEncoderExample {
 - Ele permite combinar algoritmos antigos e novos durante uma migração de sistema.
 
 ---
+## Authentication Provider
+
+No Spring Security, o `AuthenticationProvider` é responsável por lidar com a lógica de autenticação. Ele abstrai o processo de validação das credenciais do usuário e oferece flexibilidade para implementar soluções customizadas quando necessário.
+
+## Exemplos de Cenários com AuthenticationProvider
+
+### 1. Autenticação com Username e Senha
+O `AuthenticationProvider` padrão utiliza o `UserDetailsService` para localizar o usuário no sistema e o `PasswordEncoder` para validar a senha. Esse é o caso mais comum de autenticação.
+
+**Exemplo:**
+```java
+@Component
+public class CustomAuthenticationProvider implements AuthenticationProvider {
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Override
+    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+        String username = authentication.getName();
+        String password = authentication.getCredentials().toString();
+
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+        if (passwordEncoder.matches(password, userDetails.getPassword())) {
+            return new UsernamePasswordAuthenticationToken(username, password, userDetails.getAuthorities());
+        } else {
+            throw new BadCredentialsException("Senha inválida");
+        }
+    }
+
+    @Override
+    public boolean supports(Class<?> authentication) {
+        return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
+    }
+}
+```
+
+### 2. Autenticação OAUTH2
+Em um cenário de autenticação OAUTH2, você pode implementar um `AuthenticationProvider` que valida tokens de acesso recebidos.
+
+**Exemplo:**
+```java
+@Component
+public class OAuth2AuthenticationProvider implements AuthenticationProvider {
+
+    @Autowired
+    private OAuth2TokenValidator tokenValidator;
+
+    @Override
+    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+        String token = authentication.getCredentials().toString();
+
+        if (tokenValidator.validate(token)) {
+            return new OAuth2AuthenticationToken(token, null, List.of(new SimpleGrantedAuthority("ROLE_USER")));
+        } else {
+            throw new BadCredentialsException("Token inválido");
+        }
+    }
+
+    @Override
+    public boolean supports(Class<?> authentication) {
+        return OAuth2AuthenticationToken.class.isAssignableFrom(authentication);
+    }
+}
+```
+
+### 3. Autenticação JAAS (Java Authentication and Authorization Service)
+Para sistemas que utilizam JAAS, um `AuthenticationProvider` pode integrar diretamente com este framework.
+
+**Exemplo:**
+```java
+@Component
+public class JAASAuthenticationProvider implements AuthenticationProvider {
+
+    @Override
+    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+        String username = authentication.getName();
+        String password = authentication.getCredentials().toString();
+
+        // Integração com JAAS
+        try {
+            LoginContext loginContext = new LoginContext("MyApp", new UsernamePasswordCallbackHandler(username, password));
+            loginContext.login();
+
+            return new UsernamePasswordAuthenticationToken(username, password, List.of(new SimpleGrantedAuthority("ROLE_USER")));
+        } catch (LoginException e) {
+            throw new BadCredentialsException("Falha na autenticação via JAAS", e);
+        }
+    }
+
+    @Override
+    public boolean supports(Class<?> authentication) {
+        return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
+    }
+}
+```
+
+## Detalhes da Interface AuthenticationProvider
+
+A interface `AuthenticationProvider` define dois métodos principais:
+
+```java
+public interface AuthenticationProvider {
+
+    Authentication authenticate(Authentication authentication) throws AuthenticationException;
+
+    boolean supports(Class<?> authentication);
+}
+```
+
+### Método `authenticate`
+O método `authenticate()` recebe um objeto `Authentication` contendo as credenciais do usuário e retorna um novo objeto `Authentication` caso a autenticação seja bem-sucedida. Caso contrário, lança uma exceção do tipo `AuthenticationException`.
+
+**Exemplo de uso:**
+```java
+@Override
+public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+    // Lógica de autenticação customizada
+}
+```
+
+### Método `supports`
+O método `supports()` determina se o `AuthenticationProvider` suporta o tipo de objeto `Authentication` recebido.
+
+**Exemplo de implementação:**
+```java
+@Override
+public boolean supports(Class<?> authentication) {
+    return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
+}
+```
+
+Esse método é útil para garantir que o `AuthenticationProvider` correto seja utilizado no momento da autenticação.
+
+## Gerenciamento de AuthenticationProviders
+No Spring Security, o `ProviderManager` é a implementação padrão do `AuthenticationManager`. Ele delega a autenticação para uma lista de `AuthenticationProvider` registrados, tentando autenticar o usuário com cada um deles até que um sucesso seja alcançado ou todas as tentativas falhem.
