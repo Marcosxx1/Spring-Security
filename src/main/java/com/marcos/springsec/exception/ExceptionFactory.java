@@ -4,6 +4,7 @@ import com.marcos.springsec.exception.exeptions.CustomerAlreadyExistsException;
 import com.marcos.springsec.exception.exeptions.ResourceNotFoundException;
 import com.marcos.springsec.exception.util.MessageSourceAcessorLocal;
 import org.springframework.context.support.MessageSourceAccessor;
+import org.springframework.security.authentication.BadCredentialsException;
 
 import static com.marcos.springsec.exception.ErrorMessages.*;
 

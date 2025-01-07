@@ -569,19 +569,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 
 public class DelegatingPasswordEncoderExample {
-    public static void main(String[] args) {
-        // Criar o DelegatingPasswordEncoder
-        PasswordEncoder delegatingPasswordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-
-        String rawPassword = "password123";
-
-        // Gerar hash com o encoder padrão ({bcrypt})
-        String encodedPassword = delegatingPasswordEncoder.encode(rawPassword);
-        System.out.println("Encoded: " + encodedPassword);
-
-        // Validar a senha
-        boolean matches = delegatingPasswordEncoder.matches(rawPassword, encodedPassword);
-        System.out.println("Password matches: " + matches);
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 }
 ```
@@ -633,7 +623,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 ```
 
 ### 2. Autenticação OAUTH2
-Em um cenário de autenticação OAUTH2, você pode implementar um `AuthenticationProvider` que valida tokens de acesso recebidos.
+Em um cenário de autenticação OAUTH2, podemos implementar um `AuthenticationProvider` que valida tokens de acesso recebidos.
 
 **Exemplo:**
 ```java

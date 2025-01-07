@@ -1,8 +1,7 @@
 spring:
     config:
-        import: application_prod.yml
-    profiles:
-        active: prod
+      activate:
+          on-profile: prod
     application:
         name: ${SPRING_APP_NAME:springsec}
     datasource:
