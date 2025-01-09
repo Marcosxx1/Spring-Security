@@ -20,6 +20,7 @@ public class ProjectSecurityConfiguration {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        //http.requiresChannel((x)-> x.anyRequest().requiresSecure()); // Só será aceito HTTPS
         http.csrf(AbstractHttpConfigurer::disable); // Precisamos desabilitar o csrf para poder fazer requisições que não sejam GET para rotas desprotegidas
         http.authorizeHttpRequests((request) -> request
                 .requestMatchers(AUTHENTICATED_PATHS).authenticated()

@@ -18,6 +18,7 @@
 - [Fluxo sequencial utilizando nossa propria implementação de UserDetailsService](#fluxo-sequencial-utilizando-nossa-própria-implementação-de-userdetailsservice)
 - [Formas Diferentes de Privacidade de Dados](#formas-diferentes-de-privacidade-de-dados)
 - [Múltiplas Estratégias com `DelegatingPasswordEncoder`](#múltiplas-estratégias-com-delegatingpasswordencoder)
+- [Aceitando Apenas Tráfego HTTPS](#aceitando-apenas-tráfego-https)
 ---
 
  
@@ -721,3 +722,29 @@ Esse método é útil para garantir que o `AuthenticationProvider` correto seja 
 
 ## Gerenciamento de AuthenticationProviders
 No Spring Security, o `ProviderManager` é a implementação padrão do `AuthenticationManager`. Ele delega a autenticação para uma lista de `AuthenticationProvider` registrados, tentando autenticar o usuário com cada um deles até que um sucesso seja alcançado ou todas as tentativas falhem.
+
+
+### Aceitando Apenas Tráfego HTTPS
+
+Ativar **HTTPS** em nossa aplicação é crucial para garantir a confidencialidade e integridade dos dados durante a comunicação entre clientes e servidores. Por criptografar os dados transmitidos, o **HTTPS** previne ataques como *eavesdropping* e *man-in-the-middle*.
+
+O **Spring Security** oferece uma integração simples para garantir que apenas tráfego **HTTPS** seja aceito em nossa aplicação. Abaixo está um exemplo de configuração que permite apenas tráfego seguro:
+
+```java
+@Bean
+SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+    http.requiresChannel(rcf -> rcf.anyRequest().requiresSecure()) // Exige HTTPS
+        .authorizeHttpRequests((requests) -> requests
+            .requestMatchers("/public/**").permitAll() // Permite rotas públicas
+            .anyRequest().authenticated());           // Requer autenticação para outras rotas
+    return http.build();
+}
+```
+
+Se em algum cenário específico for necessário aceitar apenas tráfego **HTTP**, podemos invocar o método `requiresInsecure()` ao invés de `requiresSecure()`.
+
+### Resumo
+- **HTTPS** protege contra interceptações e alterações de dados.
+- Configurar o **Spring Security** para exigir **HTTPS** é uma prática essencial para aplicações seguras.
+- Em casos excepcionais, podemos optar por aceitar tráfego **HTTP** usando `requiresInsecure()`, mas isso deve ser feito com cautela.
+
