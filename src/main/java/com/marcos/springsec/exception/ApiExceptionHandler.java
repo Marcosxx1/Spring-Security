@@ -1,14 +1,17 @@
-package com.marcos.springsec.config;
+package com.marcos.springsec.exception;
 
 import com.marcos.springsec.domain.dto.errors.ErrorResponse;
 import com.marcos.springsec.domain.dto.errors.ValidationErrorResponse;
-import com.marcos.springsec.exception.CustomHttpException;
 import com.marcos.springsec.exception.exeptions.CustomerAlreadyExistsException;
+import com.marcos.springsec.exception.exeptions.InternalServerException;
 import com.marcos.springsec.exception.exeptions.ResourceNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -28,7 +31,7 @@ import static com.marcos.springsec.exception.ErrorMessages.VALIDATION_ERROR_TITL
 @Slf4j
 public class ApiExceptionHandler {
 
-    private final MessageSourceAccessor messageSourceAcessor;
+    private final MessageSourceAccessor messageSourceAccessor;
 
     @ExceptionHandler(CustomHttpException.class)
     public ResponseEntity<ErrorResponse> handleCustomHttpException(CustomHttpException ex) {
@@ -36,6 +39,35 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(errorResponse, ex.getHttpStatus());
     }
 
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponse> handleAccessDeniedException(
+            AccessDeniedException ex) {
+
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                messageSourceAccessor.getMessage("Access denied"),
+                messageSourceAccessor.getMessage("Access denied"));
+        return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ErrorResponse> handleAuthenticationException(
+            AuthenticationException authenticationException, HttpServletRequest request) {
+
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                messageSourceAccessor.getMessage("Forbidden"),
+                messageSourceAccessor.getMessage("Forbidden"));
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(InternalServerException.class)
+    public ResponseEntity<ErrorResponse> handleInternalServerException(InternalServerException ex) {
+        log.error("Exception: ", ex);
+        String message = messageSourceAccessor.getMessage("Internal Server error");
+        ErrorResponse errorResponse = new ErrorResponse(message, message);
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException ex) {
@@ -68,8 +100,8 @@ public class ApiExceptionHandler {
         }
 
         var validationErrorResponse = new ValidationErrorResponse(
-                messageSourceAcessor.getMessage(VALIDATION_ERROR_TITLE),
-                messageSourceAcessor.getMessage(VALIDATION_ERROR_DETAIL),
+                messageSourceAccessor.getMessage(VALIDATION_ERROR_TITLE),
+                messageSourceAccessor.getMessage(VALIDATION_ERROR_DETAIL),
                 validationErrors);
         return new ResponseEntity<>(validationErrorResponse, HttpStatus.BAD_REQUEST);
     }

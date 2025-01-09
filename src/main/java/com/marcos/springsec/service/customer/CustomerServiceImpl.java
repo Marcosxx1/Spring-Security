@@ -19,7 +19,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer getCustomerEmail(String email) {
         return customerRepository.findByEmail(email)
-                .orElseThrow(() -> ExceptionFactory.customerAlreadyExistsException(email));
+                .orElseThrow( ExceptionFactory::resourceNotFoundException);
     }
 
     @Override
