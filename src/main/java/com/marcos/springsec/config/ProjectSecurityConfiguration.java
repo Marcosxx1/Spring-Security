@@ -1,5 +1,6 @@
 package com.marcos.springsec.config;
 
+import com.marcos.springsec.exception.CustomBasicEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,14 +20,15 @@ public class ProjectSecurityConfiguration {
     private final String[] ALLOWED_PATHS = {CONTACT, NOTICES, ERROR, CUSTOMER};
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http, CustomBasicEntryPoint customBasicEntryPoint) throws Exception {
         //http.requiresChannel((x)-> x.anyRequest().requiresSecure()); // Só será aceito HTTPS
         http.csrf(AbstractHttpConfigurer::disable); // Precisamos desabilitar o csrf para poder fazer requisições que não sejam GET para rotas desprotegidas
         http.authorizeHttpRequests((request) -> request
                 .requestMatchers(AUTHENTICATED_PATHS).authenticated()
                 .requestMatchers(ALLOWED_PATHS).permitAll());
         http.formLogin(withDefaults());
-        http.httpBasic(withDefaults());
+        http.httpBasic(httpBasic -> httpBasic.authenticationEntryPoint(customBasicEntryPoint)); // Configura o EntryPoint, CASO NÃO CONFIGUREMOS O Spring Security ainda vai pegar a implementação do BasicAuthenticationEntryPoint e não a que criamos
+
         return http.build();
     }
 

@@ -19,6 +19,8 @@
 - [Formas Diferentes de Privacidade de Dados](#formas-diferentes-de-privacidade-de-dados)
 - [Múltiplas Estratégias com `DelegatingPasswordEncoder`](#múltiplas-estratégias-com-delegatingpasswordencoder)
 - [Aceitando Apenas Tráfego HTTPS](#aceitando-apenas-tráfego-https)
+- [Definindo `AuthenticationEntryPoint` customizado](#definindo-authenticationentrypoint-customizado)
+- [Configuração no fluxo HTTP básico](#2-configuração-no-fluxo-http-básico)
 ---
 
  
@@ -815,3 +817,30 @@ Após a modificação, se um usuário não for encontrado:
 1. O `loadUserByUsername` lançará uma `UsernameNotFoundException`.
 2. O Spring Security retornará um HTTP 401 com uma mensagem apropriada.
 3. O comportamento estará alinhado às práticas recomendadas do Spring Security.
+
+
+### Definindo AuthenticationEntryPoint Customizado
+
+Abaixo estão os trechos de código para definir a customização do `AuthenticationEntryPoint` para o fluxo HTTP **básico**:
+
+### 1. Implementação da classe `AuthenticationEntryPoint`
+
+Precisamos criar a implementação da classe utilizando a interface `AuthenticationEntryPoint` e sobrescrever o método `commence()`. Dentro do método `commence`, podemos criar a lógica responsável por enviar a resposta de volta ao cliente com base nos requisitos definidos.
+
+```java
+public class CustomBasicAuthenticationEntryPoint implements AuthenticationEntryPoint {
+
+    @Override
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
+        response.setHeader("project-error-reason", "Authentication failed");
+        response.sendError(HttpStatus.UNAUTHORIZED.value(), authException.getMessage());
+    }
+}
+```
+
+### 2. Configuração no fluxo HTTP básico
+
+A classe `CustomBasicAuthenticationEntryPoint` criada pode ser configurada para o fluxo HTTP básico (`httpBasic`). Uma estratégia similar pode ser seguida para o fluxo de `formLogin`:
+
+```java
+http.httpBasic(hbc -> hbc.authenticationEntryPoint(new CustomBasicAuthenticationEntryPoint()));
