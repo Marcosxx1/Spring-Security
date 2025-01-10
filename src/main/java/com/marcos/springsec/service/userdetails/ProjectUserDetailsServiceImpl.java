@@ -1,5 +1,6 @@
 package com.marcos.springsec.service.userdetails;
 
+import com.marcos.springsec.exception.exeptions.ResourceNotFoundException;
 import com.marcos.springsec.service.customer.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,10 +21,12 @@ public class ProjectUserDetailsServiceImpl implements ProjectUserDetailsService{
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        var customer = customerService.getCustomerEmail(username);
-
-        List<GrantedAuthority> grantedAuthorities = List.of(new SimpleGrantedAuthority(customer.getRole()));
-
-        return new User(customer.getEmail(), customer.getPassword(), grantedAuthorities);
+        try{
+            var customer = customerService.getCustomerEmail(username);
+            List<GrantedAuthority> grantedAuthorities = List.of(new SimpleGrantedAuthority(customer.getRole()));
+            return new User(customer.getEmail(), customer.getPassword(), grantedAuthorities);
+        } catch(ResourceNotFoundException ex){
+            throw new UsernameNotFoundException(ex.getMessage());
+        }
     }
 }

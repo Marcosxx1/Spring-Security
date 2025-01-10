@@ -748,3 +748,70 @@ Se em algum cenário específico for necessário aceitar apenas tráfego **HTTP*
 - Configurar o **Spring Security** para exigir **HTTPS** é uma prática essencial para aplicações seguras.
 - Em casos excepcionais, podemos optar por aceitar tráfego **HTTP** usando `requiresInsecure()`, mas isso deve ser feito com cautela.
 
+## Erro
+![img_1.png](img_1.png)
+Mesmo com minhas ratativas de erro com o ExceptionFactory e resourceNotFoundException, estáva recebendo esse erro não tratado
+
+O código que estava causando o erro:
+```java
+
+package com.marcos.springsec.service.userdetails;
+
+import com.marcos.springsec.service.customer.CustomerService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class ProjectUserDetailsServiceImpl implements ProjectUserDetailsService{
+
+    private final CustomerService customerService;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        var customer = customerService.getCustomerEmail(username);
+
+        List<GrantedAuthority> grantedAuthorities = List.of(new SimpleGrantedAuthority(customer.getRole()));
+
+        return new User(customer.getEmail(), customer.getPassword(), grantedAuthorities);
+    }
+}
+
+```
+
+O motivo pelo qual um erro **Internal Server Error (HTTP 500)** é gerado quando o `loadUserByUsername` não encontra um usuário é que a exceção lançada pelo método `getCustomerEmail` é a **`ResourceNotFoundException`**, mas essa exceção não está sendo capturada explicitamente no fluxo do `AuthenticationProvider`.
+
+Por padrão, o Spring Security espera que erros relacionados à autenticação lancem subclasses de **`AuthenticationException`** (como `UsernameNotFoundException`, `BadCredentialsException`, etc.). Como a exceção lançada (`ResourceNotFoundException`) não estende `AuthenticationException`, o Spring a trata como uma exceção inesperada, resultando em um erro HTTP 500.
+
+### Solução
+Para corrigir esse comportamento, devemos garantir que o método `loadUserByUsername` do `ProjectUserDetailsServiceImpl` lance uma exceção que seja uma subclasse de `AuthenticationException` quando um usuário não for encontrado. Podemos fazer isso ao capturar a `ResourceNotFoundException` e lançando uma `UsernameNotFoundException`, por exemplo:
+
+```java
+@Override
+public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    try {
+        var customer = customerService.getCustomerEmail(username);
+        List<GrantedAuthority> grantedAuthorities = List.of(new SimpleGrantedAuthority(customer.getRole()));
+        return new User(customer.getEmail(), customer.getPassword(), grantedAuthorities);
+    } catch (ResourceNotFoundException ex) {
+        throw new UsernameNotFoundException("User not found: " + username, ex);
+    }
+}
+```
+
+### Por que usar `UsernameNotFoundException`?
+O `UsernameNotFoundException` é uma subclasse de `AuthenticationException` e é especificamente projetado para indicar que o usuário não foi encontrado durante o processo de autenticação. O Spring Security irá capturar essa exceção e gerar corretamente uma resposta HTTP 401 (Unauthorized), ao invés de 500.
+
+### Resultado esperado
+Após a modificação, se um usuário não for encontrado:
+1. O `loadUserByUsername` lançará uma `UsernameNotFoundException`.
+2. O Spring Security retornará um HTTP 401 com uma mensagem apropriada.
+3. O comportamento estará alinhado às práticas recomendadas do Spring Security.
