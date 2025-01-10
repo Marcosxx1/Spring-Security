@@ -1,5 +1,6 @@
 package com.marcos.springsec.config;
 
+import com.marcos.springsec.exception.CustomAccessDeniedHandler;
 import com.marcos.springsec.exception.CustomBasicEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +29,7 @@ public class ProjectSecurityConfiguration {
                 .requestMatchers(ALLOWED_PATHS).permitAll());
         http.formLogin(withDefaults());
         http.httpBasic(httpBasic -> httpBasic.authenticationEntryPoint(customBasicEntryPoint)); // Configura o EntryPoint, CASO NÃO CONFIGUREMOS O Spring Security ainda vai pegar a implementação do BasicAuthenticationEntryPoint e não a que criamos
+        http.exceptionHandling(exception -> exception.accessDeniedHandler(new CustomAccessDeniedHandler())/*.accessDeniedPage("/")*/);// PARA 403 Quando estamos lidando com UI (front) podemos ativar o .accessDeniedPage() que vai nos redirecionar para a página que definirmos. Caso sejaapenas REST, não é necessário pois já estaremos retornando o json
 
         return http.build();
     }

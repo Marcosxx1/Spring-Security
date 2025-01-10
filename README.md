@@ -21,6 +21,10 @@
 - [Aceitando Apenas Tráfego HTTPS](#aceitando-apenas-tráfego-https)
 - [Definindo `AuthenticationEntryPoint` customizado](#definindo-authenticationentrypoint-customizado)
 - [Configuração no fluxo HTTP básico](#2-configuração-no-fluxo-http-básico)
+- [Definindo AuthenticationEntryPoint Customizado](#definindo-authenticationentrypoint-customizado)
+- [Definindo um AccessDeniedHandler Customizado](#definindo-um-accessdeniedhandler-customizado)
+
+
 ---
 
  
@@ -844,3 +848,65 @@ A classe `CustomBasicAuthenticationEntryPoint` criada pode ser configurada para 
 
 ```java
 http.httpBasic(hbc -> hbc.authenticationEntryPoint(new CustomBasicAuthenticationEntryPoint()));
+```
+
+
+## Definindo um AccessDeniedHandler Customizado
+
+Este guia demonstra como criar e configurar um AccessDeniedHandler personalizado no Spring Security. Essa abordagem permite definir uma lógica específica para lidar com respostas de acesso negado (403) conforme os requisitos do seu projeto.
+
+### Etapas para Customização
+
+#### 1. Criar uma implementação de `AccessDeniedHandler`
+
+Crie uma classe que implemente a interface `AccessDeniedHandler` e sobrescreva o método `handle()`. Dentro deste método, você pode definir a lógica para a resposta que será enviada ao cliente.
+
+```java
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.web.access.AccessDeniedHandler;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+public class CustomAccessDeniedHandler implements AccessDeniedHandler {
+
+    @Override
+    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
+        response.setHeader("project-denied-reason", "Authorization failed");
+        response.setStatus(HttpStatus.FORBIDDEN.value());
+    }
+}
+```
+
+#### 2. Configurar o `CustomAccessDeniedHandler`
+
+Após criar a classe personalizada, configure-a em sua aplicação utilizando o método `exceptionHandling()` no `HttpSecurity`.
+
+```java
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+
+public class SecurityConfig {
+
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .exceptionHandling(exception ->
+                exception.accessDeniedHandler(new CustomAccessDeniedHandler())
+                //.accessDeniedPage("/") // Descomente esta linha para redirecionar para uma página específica em aplicações com UI
+            );
+    }
+}
+```
+
+##### Observações:
+
+- **Para Aplicações REST:**
+    - Não é necessário utilizar o método `.accessDeniedPage()` em APIs REST, pois a resposta já será enviada no formato JSON ou conforme definido no `CustomAccessDeniedHandler`.
+
+- **Para Aplicações com UI:**
+    - Caso esteja lidando com uma interface de usuário, você pode ativar o redirecionamento para uma página específica utilizando `.accessDeniedPage()`. Isso é útil para exibir uma página de erro amigável ao usuário.
+
+
+
