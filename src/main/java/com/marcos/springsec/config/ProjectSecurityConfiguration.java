@@ -22,7 +22,8 @@ public class ProjectSecurityConfiguration {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http, CustomBasicEntryPoint customBasicEntryPoint) throws Exception {
-         http.sessionManagement(session -> session.invalidSessionUrl(INVALID_SESSION).maximumSessions(1).maxSessionsPreventsLogin(true)); //  Podemos definir a quantidade máxima de sessões concorrentes também. Isso vai invaldar a sessão do usuário caso ele logue por outro navegador/meio he user who authenticates is allowed access and an existing user's session is expired.
+
+        http.sessionManagement(session -> session.invalidSessionUrl(INVALID_SESSION).maximumSessions(1).maxSessionsPreventsLogin(true)); //  Podemos definir a quantidade máxima de sessões concorrentes também. Isso vai invaldar a sessão do usuário caso ele logue por outro navegador/meio he user who authenticates is allowed access and an existing user's session is expired.
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests((request) -> request
                 .requestMatchers(AUTHENTICATED_PATHS).authenticated()

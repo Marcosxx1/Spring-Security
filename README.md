@@ -976,3 +976,39 @@ http.authorizeHttpRequests(auth ->
     auth.requestMatchers(ALLOWED_PATHS).permitAll()
 );
 ```
+## Proteção Contra Ataques de "Session Fixation"
+
+No Spring Security, é possível configurar o gerenciamento de sessão para evitar ataques de "session fixation". Esse tipo de ataque ocorre quando um atacante força uma vítima a usar um ID de sessão que ele já conhece, permitindo que o atacante roube a sessão após o login.
+
+Para configurar o gerenciamento de sessões e proteger contra ataques de "session fixation", use o método `http.sessionManagement` e configure a propriedade `sessionFixation`. Veja um exemplo abaixo:
+
+```java
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.web.SecurityFilterChain;
+
+@Bean
+public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http
+        .sessionManagement(smc -> smc
+            .sessionFixation(sfc -> sfc.changeSessionId()) // Gera um novo ID de sessão ao autenticar
+        )
+        .authorizeRequests(authz -> authz
+            .anyRequest().authenticated()
+        );
+    return http.build();
+}
+```
+
+### Opções para `sessionFixation`
+
+- `changeSessionId()`: Gera um novo ‘ID’ de sessão para cada sessão autenticada, preservando os atributos da sessão original.
+- `migrateSession()`: Semelhante a `changeSessionId`, mas pode ser usado para manter a compatibilidade com versões mais antigas.
+- `newSession()`: Cria uma sessão completamente, descartando qualquer dado armazenado anteriormente.
+- `none()`: Não faz alterações no ‘ID’ da sessão (não recomendado).
+
+### Por que usar `changeSessionId`?
+
+A opção `changeSessionId` é a recomendada, pois fornece uma boa proteção contra ataques de "session fixation" ao mesmo tempo que mantém os atributos existentes na sessão. Isso é especialmente útil em aplicações onde o estado do utilizador é armazenado na sessão.
+
+Com essas configurações, a nossa aplicação estará mais segura contra este tipo de vulnerabilidade.
