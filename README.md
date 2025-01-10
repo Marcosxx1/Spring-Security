@@ -23,6 +23,17 @@
 - [Configuração no fluxo HTTP básico](#2-configuração-no-fluxo-http-básico)
 - [Definindo AuthenticationEntryPoint Customizado](#definindo-authenticationentrypoint-customizado)
 - [Definindo um AccessDeniedHandler Customizado](#definindo-um-accessdeniedhandler-customizado)
+- [Lidando com Sessões no Spring Boot](#lidando-com-sessões-no-spring-boot)
+  - [Tempo padrão da sessão](#tempo-padrão-da-sessão)
+  - [Configuração do tempo de sessão](#configuração-do-tempo-de-sessão)
+  - [Redirecionamento após expiração de sessão](#redirecionamento-após-expiração-de-sessão)
+  - [Permitir acesso à URL de sessão expirada](#permitir-acesso-à-url-de-sessão-expirada)
+
+
+
+  
+  
+ 
 
 
 ---
@@ -907,6 +918,61 @@ public class SecurityConfig {
 
 - **Para Aplicações com UI:**
     - Caso esteja lidando com uma interface de usuário, você pode ativar o redirecionamento para uma página específica utilizando `.accessDeniedPage()`. Isso é útil para exibir uma página de erro amigável ao usuário.
+ 
+ 
+## Lidando com Sessões no Spring Boot
 
+### Tempo padrão da sessão
+No Spring Security, o tempo padrão de expiração da sessão é de **30 minutos**, controlado pelo cookie `JSESSIONID`.
 
+### Configuração do tempo de sessão
+Podemos configurar o tempo de expiração da sessão no arquivo de propriedades ou em variáveis de ambiente, utilizando o seguinte parâmetro:
 
+```properties
+server.servlet.session.timeout=${SESSION_TIMEOUT:10m}
+```
+
+- O tempo mínimo permitido é **1 minuto e 20 segundos**.
+
+### Redirecionamento após expiração de sessão
+Podemos definir uma URL específica para onde o usuário será redirecionado após a expiração da sessão. Isso é feito utilizando o método `invalidSessionUrl`:
+
+```java
+http.sessionManagement(session -> 
+    session.invalidSessionUrl(INVALID_SESSION)
+);
+```
+
+### Permitir acesso à URL de sessão expirada
+Certifique-se de liberar o acesso à URL configurada para sessões expiradas adicionando-a aos caminhos permitidos no `SecurityFilterChain`:
+
+```java
+http.authorizeHttpRequests(auth -> 
+    auth.requestMatchers(ALLOWED_PATHS).permitAll()
+);
+```
+
+### Controle de sessões concorrentes
+Também podemos limitar o número máximo de sessões concorrentes permitidas para um usuário e configurar o comportamento ao exceder esse limite. Isso é útil para garantir segurança e impedir que a mesma conta seja usada simultaneamente em vários dispositivos ou navegadores.
+
+Exemplo de configuração:
+
+```java
+http.sessionManagement(session -> 
+    session.invalidSessionUrl(INVALID_SESSION)
+           .maximumSessions(1) // Limite de 1 sessão concorrente
+           .maxSessionsPreventsLogin(true) // Impede o login em novas sessões
+);
+```
+
+- **`maximumSessions(1)`**: Define o limite máximo de sessões concorrentes (neste caso, 1).
+- **`maxSessionsPreventsLogin(true)`**: Quando `true`, impede que um novo login substitua uma sessão existente. Se `false`, a nova sessão substitui a anterior, invalidando-a.
+
+### Permitir acesso à URL de sessão expirada
+Certifique-se de liberar o acesso à URL configurada para sessões expiradas adicionando-a aos caminhos permitidos no `SecurityFilterChain`:
+
+```java
+http.authorizeHttpRequests(auth -> 
+    auth.requestMatchers(ALLOWED_PATHS).permitAll()
+);
+```

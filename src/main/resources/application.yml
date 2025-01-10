@@ -26,3 +26,8 @@ logging:
                             BasicBinder: TRACE
     pattern:
         console: ${LOGPATTERN_CONSOLE:%green(%d{HH:mm:ss.SSS}) %blue(%-5level) %red([%thread]) %yellow(%-15.15logger{15}) - %msg%n}
+
+server:
+    servlet:
+        session:
+            timeout: ${SESSION_TIMEOUT:20m}
