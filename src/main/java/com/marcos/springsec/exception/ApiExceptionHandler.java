@@ -39,28 +39,6 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(errorResponse, ex.getHttpStatus());
     }
 
-    @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<ErrorResponse> handleAccessDeniedException(
-            AccessDeniedException ex) {
-
-
-        ErrorResponse errorResponse = new ErrorResponse(
-                messageSourceAccessor.getMessage("Access denied"),
-                messageSourceAccessor.getMessage("Access denied"));
-        return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
-    }
-
-    @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<ErrorResponse> handleAuthenticationException(
-            AuthenticationException authenticationException, HttpServletRequest request) {
-
-
-        ErrorResponse errorResponse = new ErrorResponse(
-                messageSourceAccessor.getMessage("Forbidden"),
-                messageSourceAccessor.getMessage("Forbidden"));
-        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
-    }
-
     @ExceptionHandler(InternalServerException.class)
     public ResponseEntity<ErrorResponse> handleInternalServerException(InternalServerException ex) {
         log.error("Exception: ", ex);
