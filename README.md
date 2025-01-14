@@ -41,6 +41,7 @@
     - [6. Handlers de Sucesso e Falha Customizados](#6-handlers-de-sucesso-e-falha-customizados)
     - [7. Definições de logout](#7-definições-de-logout)
     - [8. Definições com thymeleaf](#7-definições-security-thymeleaf)
+- [O papel de `SecurityContext` e `SecurityContextHolder` ](#o-papel-de-securitycontext-e-securitycontextholder-)
 
 
   
@@ -1216,3 +1217,36 @@ Depois, basta utilizarmos os valores:
                     </ul>
                 </div>
 ```
+
+## O papel de `SecurityContext` e `SecurityContextHolder` 
+
+![img_2.png](img_2.png)
+(_cortesia de EazyBytes_)
+
+O `SecurityContext` e o `SecurityContextHolder` desempenham papéis fundamentais no modelo de autenticação do Spring Security. O `SecurityContextHolder` é a classe que armazena os detalhes do contexto de segurança atual, incluindo informações sobre o principal (usuário) que está interagindo com a aplicação. Por padrão, o `SecurityContextHolder` utiliza um `ThreadLocal` para manter o contexto de segurança, garantindo que ele esteja disponível para métodos executados na mesma thread, mesmo sem ser passado explicitamente como argumento.
+
+Durante o processo de autenticação, um objeto `Authentication` é criado. Este objeto contém:
+
+- **Principal**: representa o usuário autenticado, geralmente através de um nome de usuário ou um objeto de usuário.
+
+- **Credentials**: as credenciais do usuário, como a senha.
+
+- **Authorities**: as permissões ou roles concedidas ao usuário.
+
+- **Authenticated**: um booleano que indica se a autenticação foi bem-sucedida.
+
+Após a autenticação bem-sucedida, o objeto `Authentication` é armazenado no `SecurityContext`, que é gerenciado pelo `SecurityContextHolder`. Isso permite que, durante o ciclo de vida da aplicação, seja possível acessar informações sobre o usuário autenticado atual, como nome de usuário ou permissões, sem a necessidade de repetir o processo de autenticação.
+
+O `SecurityContext` é definido pela seguinte interface:
+
+```java
+public interface SecurityContext {
+    Authentication getAuthentication();
+    void setAuthentication(Authentication authentication);
+}
+```
+
+O `SecurityContextHolder` é uma classe auxiliar que fornece acesso ao contexto de segurança do Spring. Por padrão, ele utiliza um objeto `ThreadLocal` para armazenar o contexto de segurança, garantindo que ele esteja sempre disponível para métodos na mesma thread, mesmo que não seja passado explicitamente. O Spring Security gerencia automaticamente a limpeza do `ThreadLocal` em aplicações web, evitando vazamentos de memória.
+
+Em resumo, o `SecurityContextHolder` mantém o `SecurityContext`, que por sua vez contém o objeto `Authentication` com os detalhes do usuário autenticado. Essa estrutura permite que o Spring Security forneça um modelo de segurança robusto e acessível durante todo o ciclo de vida da aplicação.
+
