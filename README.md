@@ -28,7 +28,17 @@
   - [Configuração do tempo de sessão](#configuração-do-tempo-de-sessão)
   - [Redirecionamento após expiração de sessão](#redirecionamento-após-expiração-de-sessão)
   - [Permitir acesso à URL de sessão expirada](#permitir-acesso-à-url-de-sessão-expirada)
-
+- [Controle de Sessões Concorrentes](#controle-de-sessões-concorrentes)
+- [Permitir Acesso à URL de Sessão Expirada](#permitir-acesso-à-url-de-sessão-expirada)
+- [Proteção Contra Ataques de "Session Fixation"](#proteção-contra-ataques-de-session-fixation)
+- [Por que usar `changeSessionId`?](#por-que-usar-changesessionid)
+- [Configuração de Segurança no Spring Boot usando Frontend](#configuração-de-segurança-no-spring-boot-usando-frontend)
+    - [1. Proteção de Rotas Autenticadas](#1-proteção-de-rotas-autenticadas)
+    - [2. Rotas Públicas](#2-rotas-públicas)
+    - [3. Página de Login Customizada](#3-página-de-login-customizada)
+    - [4. Parâmetros Customizados de Login](#4-parâmetros-customizados-de-login)
+    - [5. Redirecionamento Após Login](#5-redirecionamento-após-login)
+    - [6. Handlers de Sucesso e Falha Customizados](#6-handlers-de-sucesso-e-falha-customizados)
 
 
   
@@ -1012,3 +1022,131 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
 A opção `changeSessionId` é a recomendada, pois fornece uma boa proteção contra ataques de "session fixation" ao mesmo tempo que mantém os atributos existentes na sessão. Isso é especialmente útil em aplicações onde o estado do utilizador é armazenado na sessão.
 
 Com essas configurações, a nossa aplicação estará mais segura contra este tipo de vulnerabilidade.
+
+## Configuração de Segurança no Spring Boot usando Frontend
+
+Código utilizado:
+```java
+@Configuration
+@RequiredArgsConstructor
+public class ProjectSecurityConfig {
+
+    private final CustomAuthenticationSuccessHandler success;
+    private final CustomAuthenticationFailureHandler failure;
+
+    @Bean
+    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+
+        http.csrf((csrf) -> csrf.disable())
+                .authorizeHttpRequests((requests) -> requests.requestMatchers("/dashboard").authenticated() //1. trocamos de permitAll para authenticated
+                        .requestMatchers("/", "/home", "/holidays/**", "/contact", "/saveMsg",
+                                "/courses", "/about", "/assets/**", "/login/**").permitAll()) //2. qualquer caminho que começe com /login/** será permitido. Spring espera para o login "username" para nome de usuário e "password" para senha do usuário, mas podemos mudar isso
+                .formLogin(flc ->
+                        flc.loginPage("/login") //3. quando adicionamos um valor aqui no flc com .loginPage() estaremos sobrescrevendo para o Spring, ao invés do login padrão do spring usaremos o nosso.
+                                .usernameParameter("customUsername").passwordParameter("customPassword")//4. Spring espera para o login "username" para nome de usuário e "password" para senha do usuário, mas podemos mudar isso com .formLogin(flc -> flc.loginPage("/login").usernameParameter("customUsername").passwordParameter("customPassword") Para debugarmos para ir na classe UserNamePasswordAuthenticationFilter
+                                .defaultSuccessUrl("/dashboard")  //5. Podemos também definir uma página padrão para depois que é feito o login lc.loginPage("/login").defaultSuccessUrl("/dashboard")).
+                                .failureUrl("/login?error=true").successHandler(success).failureHandler(failure)//
+                )
+
+                .httpBasic(Customizer.withDefaults());
+
+        return http.build();
+    }
+
+///    
+package com.eazybytes.eazyschool.handler;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+
+    @Component
+    @Slf4j
+    public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
+
+        @Override
+        public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+            log.error("Login failed due to: {})", exception.getMessage());
+            response.sendRedirect("/login?error=true");
+        }
+    }
+///
+
+package com.eazybytes.eazyschool.handler;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+
+    @Component
+    @Slf4j
+    public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+
+        @Override
+        public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+            log.info("Login successful");
+            response.sendRedirect("/dashboard");
+        }
+    }
+
+```
+
+Exemplificação de configuração de segurança utilizando a API do Spring Security com explicações detalhadas sobre as funcionalidades e opções configuradas.
+
+### 1. Proteção de Rotas Autenticadas
+```java
+//package com.eazybytes.eazyschool.config;
+.requestMatchers("/dashboard").authenticated()
+```
+- O caminho `/dashboard` foi alterado para exigir autenticação, protegendo assim informações sensíveis ou acessos restritos.
+
+### 2. Rotas Públicas
+```java
+.requestMatchers("/", "/home", "/holidays/**", "/contact", "/saveMsg",
+        "/courses", "/about", "/assets/**", "/login/**").permitAll()
+```
+- Essas rotas estão disponíveis para todos os usuários, independentemente de estarem autenticados.
+- Rotas que começam com `/NOME_ROTA/**` são explicitamente permitidas.
+
+### 3. Página de Login Customizada
+```java
+.formLogin(flc ->
+        flc.loginPage("/login")
+```
+- Sobrescreve a página de login padrão do Spring para uma página personalizada definida no caminho `/login`.
+
+### 4. Parâmetros Customizados de Login
+```java
+// Classe para debugarmos UserNamePasswordAuthenticationFilter
+.usernameParameter("customUsername")
+.passwordParameter("customPassword")
+```
+- Define nomes personalizados para os campos de usuário e senha no formulário de login.
+- Pode ser útil para alinhar o front-end com os requisitos do back-end.
+
+### 5. Redirecionamento Após Login
+```java
+.defaultSuccessUrl("/dashboard")
+```
+- Após login bem-sucedido, o usuário será redirecionado para `/dashboard`.
+
+### 6. Handlers de sucesso e falha customizados
+```java
+.failureUrl("/login?error=true").successHandler(success).failureHandler(failure)
+```
+- Em caso de falha no login, o usuário será redirecionado para `/login?error=true` e definimos os handlers customiados
+
+
+Com essas configurações, garantimos um controle detalhado sobre autenticação e autorização em nossa aplicação Spring Boot.
