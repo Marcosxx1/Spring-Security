@@ -39,6 +39,8 @@
     - [4. Parâmetros Customizados de Login](#4-parâmetros-customizados-de-login)
     - [5. Redirecionamento Após Login](#5-redirecionamento-após-login)
     - [6. Handlers de Sucesso e Falha Customizados](#6-handlers-de-sucesso-e-falha-customizados)
+    - [7. Definições de logout](#7-definições-de-logout)
+    - [8. Definições com thymeleaf](#7-definições-security-thymeleaf)
 
 
   
@@ -1041,12 +1043,18 @@ public class ProjectSecurityConfig {
                 .authorizeHttpRequests((requests) -> requests.requestMatchers("/dashboard").authenticated() //1. trocamos de permitAll para authenticated
                         .requestMatchers("/", "/home", "/holidays/**", "/contact", "/saveMsg",
                                 "/courses", "/about", "/assets/**", "/login/**").permitAll()) //2. qualquer caminho que começe com /login/** será permitido. Spring espera para o login "username" para nome de usuário e "password" para senha do usuário, mas podemos mudar isso
+
                 .formLogin(flc ->
                         flc.loginPage("/login") //3. quando adicionamos um valor aqui no flc com .loginPage() estaremos sobrescrevendo para o Spring, ao invés do login padrão do spring usaremos o nosso.
                                 .usernameParameter("customUsername").passwordParameter("customPassword")//4. Spring espera para o login "username" para nome de usuário e "password" para senha do usuário, mas podemos mudar isso com .formLogin(flc -> flc.loginPage("/login").usernameParameter("customUsername").passwordParameter("customPassword") Para debugarmos para ir na classe UserNamePasswordAuthenticationFilter
                                 .defaultSuccessUrl("/dashboard")  //5. Podemos também definir uma página padrão para depois que é feito o login lc.loginPage("/login").defaultSuccessUrl("/dashboard")).
-                                .failureUrl("/login?error=true").successHandler(success).failureHandler(failure)//
-                )
+                                .failureUrl("/login?error=true").successHandler(success).failureHandler(failure))
+
+                .logout(logout ->
+                        logout.logoutSuccessUrl("/login?logout=true")
+                                .invalidateHttpSession(true)
+                                .clearAuthentication(true)
+                                .deleteCookies("JSESSIONID"))
 
                 .httpBasic(Customizer.withDefaults());
 
@@ -1148,5 +1156,63 @@ Exemplificação de configuração de segurança utilizando a API do Spring Secu
 ```
 - Em caso de falha no login, o usuário será redirecionado para `/login?error=true` e definimos os handlers customiados
 
+### 7. Definições de logout
+Com as configurações abaixo, nós podemos configurar o que deve acontecer durante a operação de logout do usuário
 
-Com essas configurações, garantimos um controle detalhado sobre autenticação e autorização em nossa aplicação Spring Boot.
+```java
+.logout(logout ->
+   logout.logoutSuccessUrl("/login?logout=true")
+           .invalidateHttpSession(true)
+           .clearAuthentication(true)
+           .deleteCookies("JSESSIONID"))
+```
+
+1. `logoutSuccessUrl`: A url que será redirecionada após o logout acontecer. A configuração padrão do Spring Security é `/login?logout`
+Esse é um atalho para invocarmos o `logoutSuccessHandler(LogoutSuccessHandler)` com um `SimpleUrlLogoutSuccessHandler`
+
+2. `invalidateHttpSession`: Configura o `SecurityContextLogoutHandler` para invalidar o HttpSession durante o logout.
+
+3. `clearAuthentication` - Especifica se o `SecurityContextLogoutHandler` deve limpar o `Authentication` durante o logout
+
+4. `deleteCoockies` - Nos permite especificar os nomes dos cookies para serem removidos durante o processo de logout. Este é um atalho
+para invocar facilmente o método `addLogoutHandler(LogoutHandler)` com um `CookieClearingLogoutHandler`
+
+### 7. Definições security thymeleaf
+Quando estivermos trabalhando com thymeleaf e quisermos mostrar ou esconder algum recurso de usuários não autenticados, 
+devemos utilizar estas duas dependencias:
+```xml
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.thymeleaf.extras</groupId>
+			<artifactId>thymeleaf-extras-springsecurity6</artifactId>
+		</dependency>
+```
+
+Depois, basta utilizarmos os valores:
+```html
+<div class="collapse navbar-collapse" id="navbarScroll">
+                    <ul class="navbar-nav ms-auto my-2 my-lg-0 navbar-nav-scroll">
+                        <li class="nav-item">
+                            <a th:href="@{/home}" class="nav-link" aria-current="page" sec:authorize="isAnonymous()">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:href="@{/courses}" class="nav-link" sec:authorize="isAnonymous()">Courses</a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:href="@{/contact}" class="nav-link"  sec:authorize="isAnonymous()">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:href="@{/login}" class="nav-link"  sec:authorize="isAnonymous()">LogIn</a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:href="@{/dashboard}" class="nav-link" sec:authorize="isAuthenticated()">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:href="@{/logout}" class="nav-link" sec:authorize="isAuthenticated()">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+```
