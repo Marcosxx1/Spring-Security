@@ -33,7 +33,7 @@ public class Customer {
     private String mobileNumber;
 
     @Column(name = "pwd", length = 500, nullable = false)
-    private String pwd;
+    private String password;
 
     @Column(name = "role", length = 100, nullable = false)
     private String role;

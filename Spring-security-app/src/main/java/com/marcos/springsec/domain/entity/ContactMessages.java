@@ -3,6 +3,7 @@ package com.marcos.springsec.domain.entity;
 import jakarta.persistence.*;
 import jakarta.persistence.GenerationType;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,18 +11,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class ContactMessages {
 
-    /*CREATE TABLE `contact_messages`
-(
-    `contact_id`    varchar(50)   NOT NULL,
-    `contact_name`  varchar(50)   NOT NULL,
-    `contact_email` varchar(100)  NOT NULL,
-    `subject`       varchar(500)  NOT NULL,
-    `message`       varchar(2000) NOT NULL,
-    `create_dt`     date DEFAULT NULL,
-    PRIMARY KEY (`contact_id`)
-);*/
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "contact_id")
