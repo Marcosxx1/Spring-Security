@@ -22,7 +22,6 @@ public class Cards {
     @JoinColumn(name = "customer_id",referencedColumnName = "customer_id")
     private Customer customer;
 
-
     @Column(name = "card_number",  length = 100, nullable = false)
     private String cardNumber;
 

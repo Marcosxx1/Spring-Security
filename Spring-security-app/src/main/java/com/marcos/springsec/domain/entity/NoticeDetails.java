@@ -6,25 +6,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Entity(name = "notice_details")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Table(name = "notice_details")
 public class NoticeDetails {
-
-    /*CREATE TABLE `notice_details`
-(
-    `notice_id`      int          NOT NULL AUTO_INCREMENT,
-    `notice_summary` varchar(200) NOT NULL,
-    `notice_details` varchar(500) NOT NULL,
-    `notic_beg_dt`   date         NOT NULL,
-    `notic_end_dt`   date DEFAULT NULL,
-    `create_dt`      date DEFAULT NULL,
-    `update_dt`      date DEFAULT NULL,
-    PRIMARY KEY (`notice_id`)
-);
-*/
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,25 +28,24 @@ public class NoticeDetails {
     private String noticeDetails;
 
     @Column(name = "notic_beg_dt", nullable = false)
-    private String noticBegDt;
+    private LocalDate noticBegDt; // <-
 
     @Column(name = "notic_end_dt")
-    private String noticEndDt;
+    private LocalDate noticEndDt; // <-
 
     @Column(name = "create_dt")
-    private String createDt;
+    private LocalDate createDt;
 
     @Column(name = "update_dt")
-    private String updateDt;
+    private LocalDate updateDt;
 
     @PrePersist
     public void prePersist() {
-        this.createDt = java.time.LocalDate.now().toString();
+        this.createDt = LocalDate.now();
     }
 
     @PreUpdate
     public void preUpdate() {
-        this.updateDt = java.time.LocalDate.now().toString();
+        this.updateDt = LocalDate.now();
     }
-
 }

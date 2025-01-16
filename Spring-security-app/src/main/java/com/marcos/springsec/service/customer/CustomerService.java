@@ -7,4 +7,5 @@ public interface CustomerService {
 
     Customer getCustomerEmail(String email);
     String saveCustomer(CustomerRegistrationRequest request);
+    Customer getCustomerById(Long id);
 }

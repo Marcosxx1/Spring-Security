@@ -39,4 +39,10 @@ public class CustomerServiceImpl implements CustomerService {
 
         return "saved successfuly";
     }
+
+    @Override
+    public Customer getCustomerById(Long id) {
+        return customerRepository.findById(id)
+                .orElseThrow(ExceptionFactory::resourceNotFoundException);
+    }
 }
