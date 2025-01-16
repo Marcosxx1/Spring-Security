@@ -1,7 +1,9 @@
 package com.marcos.springsec.controller.contact;
 
 
+import com.marcos.springsec.domain.entity.ContactMessages;
+
 public interface ContactController {
 
-    public String saveContactInquiryDetails();
+    public ContactMessages saveContactInquiryDetails(ContactMessages contactMessages);
 }

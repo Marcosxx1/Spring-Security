@@ -13,5 +13,5 @@ import java.util.Optional;
 @Repository
 public interface NoticeRepository extends CrudRepository<NoticeDetails, Long> {
 
-    Optional<List<NoticeDetails>> findByNoticBegDtLessThanEqualAndNoticEndDtGreaterThanEqual(LocalDate date);
+    Optional<List<NoticeDetails>> findByNoticBegDtLessThanEqualAndNoticEndDtGreaterThanEqual(LocalDate now);
 }
