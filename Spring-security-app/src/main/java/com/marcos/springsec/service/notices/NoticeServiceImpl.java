@@ -16,7 +16,7 @@ public class NoticeServiceImpl implements NoticeService{
 
     @Override
     public List<NoticeDetails> findAllActiveNotices() {
-        return noticeRepository.findByNoticBegDtLessThanEqualAndNoticEndDtGreaterThanEqual(LocalDate.now()).orElse(null);
+        return noticeRepository.findNoticesByCurrentDate(LocalDate.now()).orElse(null);
     }
 
 }

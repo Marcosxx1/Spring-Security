@@ -13,5 +13,7 @@ import java.util.Optional;
 @Repository
 public interface NoticeRepository extends CrudRepository<NoticeDetails, Long> {
 
-    Optional<List<NoticeDetails>> findByNoticBegDtLessThanEqualAndNoticEndDtGreaterThanEqual(LocalDate now);
+    @Query("SELECT n FROM notice_details n WHERE :now BETWEEN n.noticBegDt AND n.noticEndDt")
+    Optional<List<NoticeDetails>> findNoticesByCurrentDate(LocalDate now);
 }
+

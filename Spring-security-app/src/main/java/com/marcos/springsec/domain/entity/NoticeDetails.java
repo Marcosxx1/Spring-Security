@@ -1,10 +1,7 @@
 package com.marcos.springsec.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -14,6 +11,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 @Table(name = "notice_details")
+@EqualsAndHashCode
 public class NoticeDetails {
 
     @Id
