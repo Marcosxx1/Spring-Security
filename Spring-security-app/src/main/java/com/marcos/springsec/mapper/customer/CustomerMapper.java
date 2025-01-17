@@ -7,7 +7,9 @@ public class CustomerMapper {
 
     public static Customer toEntity(CustomerRegistrationRequest customerRegistrationRequest) {
         return Customer.builder()
+                .name(customerRegistrationRequest.getName())
                 .email(customerRegistrationRequest.getEmail())
+                .mobileNumber(customerRegistrationRequest.getMobileNumber())
                 .password(customerRegistrationRequest.getPassword())
                 .role(customerRegistrationRequest.getRole())
                 .build();

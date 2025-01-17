@@ -1,5 +1,6 @@
 package com.marcos.springsec.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.FetchType;
@@ -32,6 +33,7 @@ public class Customer {
     @Column(name = "mobile_number", length = 20, nullable = false)
     private String mobileNumber;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "pwd", length = 500, nullable = false)
     private String password;
 

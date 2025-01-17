@@ -6,8 +6,10 @@ import com.marcos.springsec.exception.ExceptionFactory;
 import com.marcos.springsec.mapper.customer.CustomerMapper;
 import com.marcos.springsec.repository.customer.CustomerRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 
 @Service
 @RequiredArgsConstructor
@@ -25,9 +27,9 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public String saveCustomer(CustomerRegistrationRequest request) {
 
-        var something = customerRepository.findByEmail(request.getEmail());
+        var user = customerRepository.findByEmail(request.getEmail());
 
-        if (something.isPresent()) {
+        if (user.isPresent()) {
             throw ExceptionFactory.customerAlreadyExistsException(request.getEmail());
         }
 
@@ -44,5 +46,11 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer getCustomerById(Long id) {
         return customerRepository.findById(id)
                 .orElseThrow(ExceptionFactory::resourceNotFoundException);
+    }
+
+    @Override
+    public Customer getUserDetailsAfterLogin(Authentication authentication) {
+        return customerRepository.findByEmail(authentication.getName())
+                .orElse(null);
     }
 }

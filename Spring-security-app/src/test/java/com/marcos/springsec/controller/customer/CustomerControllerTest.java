@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static com.marcos.springsec.constants.PathConstants.CUSTOMER;
+import static com.marcos.springsec.constants.PathConstants.REGISTER;
 import static org.hamcrest.Matchers.hasKey;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -31,9 +32,9 @@ public class CustomerControllerTest {
         CustomerRegistrationRequest request = CustomerRegistrationRequest.builder().build();
         var requestJson = objectMapper.writeValueAsString(request);
 
-        String[] invalidParams = {"email", "password", "role"};
+        String[] invalidParams = {"name","email", "mobileNumber","password", "role"};
 
-        var resultActions = mockMvc.perform(post(CUSTOMER).content(requestJson).contentType(MediaType.APPLICATION_JSON))
+        var resultActions = mockMvc.perform(post(REGISTER).content(requestJson).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
 
         for(String invalidParam : invalidParams){
