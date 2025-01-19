@@ -42,6 +42,7 @@
     - [7. Definições de logout](#7-definições-de-logout)
     - [8. Definições com thymeleaf](#7-definições-security-thymeleaf)
 - [O papel de `SecurityContext` e `SecurityContextHolder` ](#o-papel-de-securitycontext-e-securitycontextholder-)
+- [(CORS) CROSS-ORIGIN RESOURCE SHARING` ](#cors-cross-origin-resource-sharing)
 
 
   
@@ -1250,3 +1251,120 @@ O `SecurityContextHolder` é uma classe auxiliar que fornece acesso ao contexto 
 
 Em resumo, o `SecurityContextHolder` mantém o `SecurityContext`, que por sua vez contém o objeto `Authentication` com os detalhes do usuário autenticado. Essa estrutura permite que o Spring Security forneça um modelo de segurança robusto e acessível durante todo o ciclo de vida da aplicação.
 
+---
+
+## **CORS (Cross-Origin Resource Sharing)**
+
+CORS é um mecanismo que permite que scripts executados no navegador acessem recursos de diferentes origens, promovendo maior controle sobre requisições cross-origin (entre diferentes domínios).
+
+Por padrão, navegadores bloqueiam requisições feitas para um domínio diferente daquele em que o JavaScript está sendo executado. Isso é uma proteção de segurança integrada chamada **Same-Origin Policy (Política de Mesma Origem)**.
+
+CORS é uma especificação do W3C implementada na maioria dos navegadores modernos, que permite que o servidor da origem remota especifique explicitamente quais origens estão autorizadas a acessar seus recursos.
+
+### **Pontos Importantes**:
+1. **CORS NÃO é um problema de segurança**:  
+   Ele é uma proteção padrão implementada pelos navegadores para restringir o compartilhamento de dados entre diferentes origens.
+
+2. **"Origem diferente" significa que a URL que está sendo acessada difere da origem do script em algum dos seguintes aspectos**:
+    - Esquema diferente (HTTP ou HTTPS).
+    - Domínio diferente (exemplo: `example.com` vs `api.example.com`).
+    - Porta diferente (exemplo: `http://example.com:80` vs `http://example.com:8080`).
+
+3. **Como funciona o bloqueio por padrão**:  
+   Se uma aplicação frontend hospedada em `http://example.com` tentar fazer uma requisição para uma API hospedada em `http://api.example.com`, o navegador bloqueará a requisição, a menos que a API permita explicitamente essa comunicação configurando os cabeçalhos de CORS.
+
+4. **Configuração do CORS**:  
+   Para habilitar o acesso cross-origin, o servidor deve incluir cabeçalhos HTTP como:
+    - `Access-Control-Allow-Origin`: Especifica as origens permitidas.
+    - `Access-Control-Allow-Methods`: Define os métodos HTTP permitidos.
+    - `Access-Control-Allow-Headers`: Lista os cabeçalhos personalizados que podem ser usados.
+
+### (UMA DAS) Soluções para CORS
+Dado o cenário onde o UI(FRONT) foi feito o deploy em um servidor diferente e está tentando se comunicar com o serviço REST
+com o deploy em outro servidor, então estes tipos de comunicações nós podemos permitir com ajuda da anotação @CrossOrigin.
+
+`@CrossOrigin` permite a clientes de qualquer dominio consumir a API
+
+Ou podemos criar nossa configuração customizada:
+
+`CorsConfigurationSource`
+
+```java
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+public class CustomCorsConfigurationSource implements CorsConfigurationSource {
+
+    private final Map<String, CorsConfiguration> corsConfigurations = new HashMap<>();
+
+    public CustomCorsConfigurationSource() {
+        // Configuração para o endpoint /api/public
+        CorsConfiguration publicConfig = new CorsConfiguration();
+        publicConfig.setAllowedOrigins(Arrays.asList("http://public.example.com"));
+        publicConfig.setAllowedMethods(Arrays.asList("GET", "OPTIONS"));
+        publicConfig.setAllowedHeaders(Arrays.asList("Content-Type"));
+        corsConfigurations.put("/api/public/**", publicConfig);
+
+        // Configuração para o endpoint /api/private
+        CorsConfiguration privateConfig = new CorsConfiguration();
+        privateConfig.setAllowedOrigins(Arrays.asList("http://private.example.com"));
+        privateConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+        privateConfig.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization"));
+        privateConfig.setAllowCredentials(true);
+        corsConfigurations.put("/api/private/**", privateConfig);
+    }
+
+    @Override
+    public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+        String requestUri = request.getRequestURI();
+
+        // Retorna a configuração com base no padrão do caminho
+        for (Map.Entry<String, CorsConfiguration> entry : corsConfigurations.entrySet()) {
+            if (requestUri.startsWith(entry.getKey().replace("/**", ""))) {
+                return entry.getValue();
+            }
+        }
+
+        return null; // Sem configuração CORS para endpoints não mapeados
+    }
+}
+
+
+```
+`SecurityConfig`
+
+```java
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfigurationSource;
+
+@Configuration
+public class SecurityConfig {
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .cors(cors -> cors.configurationSource(customCorsConfigurationSource()))
+            .csrf().disable()
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/api/public/**").permitAll()
+                .requestMatchers("/api/private/**").authenticated()
+            );
+        return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource customCorsConfigurationSource() {
+        return new CustomCorsConfigurationSource();
+    }
+}
+
+```

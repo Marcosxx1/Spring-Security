@@ -1,5 +1,6 @@
 package com.marcos.springsec.config;
 
+import com.marcos.springsec.config.cors.CustomCorsConfigurationSource;
 import com.marcos.springsec.exception.CustomAccessDeniedHandler;
 import com.marcos.springsec.exception.CustomBasicEntryPoint;
 import org.springframework.context.annotation.Bean;
@@ -9,6 +10,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 import static com.marcos.springsec.constants.PathConstants.*;
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -23,11 +25,16 @@ public class ProjectSecurityConfiguration {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http, CustomBasicEntryPoint customBasicEntryPoint) throws Exception {
 
-        http.sessionManagement(session -> session.invalidSessionUrl(INVALID_SESSION).maximumSessions(1).maxSessionsPreventsLogin(true)); //  Podemos definir a quantidade máxima de sessões concorrentes também. Isso vai invaldar a sessão do usuário caso ele logue por outro navegador/meio he user who authenticates is allowed access and an existing user's session is expired.
+        http.cors(cors ->
+                cors.configurationSource(customConfigurationSource()));
+
         http.csrf(AbstractHttpConfigurer::disable);
+        http.sessionManagement(session -> session.invalidSessionUrl(INVALID_SESSION).maximumSessions(1).maxSessionsPreventsLogin(true));
+
         http.authorizeHttpRequests((request) -> request
                 .requestMatchers(AUTHENTICATED_PATHS).authenticated()
                 .requestMatchers(ALLOWED_PATHS).permitAll());
+
         http.formLogin(withDefaults());
         http.httpBasic(httpBasic -> httpBasic.authenticationEntryPoint(customBasicEntryPoint));
         http.exceptionHandling(exception -> exception.accessDeniedHandler(new CustomAccessDeniedHandler()) );
@@ -41,4 +48,8 @@ public class ProjectSecurityConfiguration {
     }
 
 
+    @Bean
+    public CorsConfigurationSource customConfigurationSource(){
+        return new CustomCorsConfigurationSource();
+    }
 }
