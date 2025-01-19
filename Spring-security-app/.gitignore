@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Ignorar arquivos XML de configurações específicas
+META-INF/orm.xml
+META-INF/persistence.xml
