@@ -42,10 +42,10 @@
     - [7. Definições de logout](#7-definições-de-logout)
     - [8. Definições com thymeleaf](#7-definições-security-thymeleaf)
 - [O papel de `SecurityContext` e `SecurityContextHolder` ](#o-papel-de-securitycontext-e-securitycontextholder-)
-- [(CORS) CROSS-ORIGIN RESOURCE SHARING` ](#cors-cross-origin-resource-sharing)
+- [(CORS) CROSS-ORIGIN RESOURCE SHARING ](#cors-cross-origin-resource-sharing)
+- [O que é um ataque Cross-Site Request Forgery (CSRF ou XSRF) ](#o-que-é-um-ataque-cross-site-request-forgery-csrf-ou-xsrf)
 
 
-  
   
  
 
@@ -1366,5 +1366,59 @@ public class SecurityConfig {
         return new CustomCorsConfigurationSource();
     }
 }
-
 ```
+---
+
+###  **O que é um ataque Cross-Site Request Forgery (CSRF ou XSRF)?**
+
+Um ataque **Cross-Site Request Forgery (CSRF)** tenta realizar uma operação em uma aplicação web no lugar do usuário sem o seu consentimento explícito. No geral, esse ataque não rouba diretamente a identidade do usuário, mas explora o fato de que o usuário pode ser induzido a executar uma ação sem a sua permissão.
+
+---
+
+### **Como funciona o CSRF?**  
+
+#### **Exemplo prático:**
+1. **Cenário inicial**:
+   - Imagine que você está acessando o site **netflix.com**.
+   - Após realizar o login, a Netflix armazena no navegador do usuário um **cookie de sessão**, que permite ao servidor identificar e autorizar o usuário.
+
+2. **Interação com um site malicioso**:
+   - O mesmo usuário acessa outro site, chamado **malintencionado.com**, em uma aba diferente do navegador.
+   - No site malintencionado, o usuário clica em um link ou visualiza um anúncio suspeito.
+
+3. **O ataque ocorre**:
+   - Esse link malicioso envia uma requisição para o site da Netflix (https://netflix.com/changeEmail), solicitando uma alteração de e-mail.
+   - Como o navegador ainda possui o cookie de sessão válido da Netflix (armazenado localmente), a requisição será autenticada pelo servidor como se tivesse sido feita pelo próprio usuário.
+
+4. **Por que o ataque funciona?**
+   - O servidor da Netflix não consegue identificar se a requisição foi feita de forma legítima ou maliciosa, já que:
+     - O cookie de autenticação do usuário está presente.
+     - A requisição vem do mesmo navegador onde o login foi realizado.
+   - O mecanismo **CORS** (Cross-Origin Resource Sharing) não bloqueia essa ação, pois o navegador permite o envio de cookies para requisições no mesmo domínio.
+
+#### **Exemplo de código usado no ataque:**
+O site malintencionado pode usar um formulário HTML oculto para enviar a requisição:  
+
+```html
+<form action="https://netflix.com/changeEmail" method="POST" id="form">
+  <input type="hidden" name="email" value="user@malintencionado.com">
+</form>
+
+<script>
+  document.getElementById('form').submit();
+</script>
+```
+
+---
+
+### **Prevenção contra CSRF**
+Para proteger aplicações contra ataques CSRF, é importante implementar medidas de segurança, como:
+1. **Tokens CSRF**:
+    - Gera-se um token único para cada sessão de usuário.
+    - Esse token é enviado no corpo ou cabeçalho das requisições e validado pelo servidor.
+2. **Validação de Referer/Origin**:
+    - O servidor valida se a requisição foi feita a partir de um domínio confiável.
+3. **Autenticação robusta**:
+    - Exigir autenticação adicional em ações sensíveis (por exemplo, confirmação por senha para alteração de e-mail).
+4. **SameSite Cookies**:
+    - Configurar os cookies com a flag `SameSite=strict` ou `SameSite=lax`, restringindo o envio de cookies em requisições de outros domínios.
