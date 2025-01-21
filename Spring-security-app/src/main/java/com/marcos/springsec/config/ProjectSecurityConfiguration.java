@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import static com.marcos.springsec.constants.PathConstants.*;
@@ -25,10 +26,11 @@ public class ProjectSecurityConfiguration {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http, CustomBasicEntryPoint customBasicEntryPoint) throws Exception {
 
-        http.cors(cors ->
-                cors.configurationSource(customConfigurationSource()));
+        http.cors(cors -> cors.configurationSource(customConfigurationSource()))
+            .csrf(csrf -> csrf
+                    .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+            );
 
-        http.csrf(AbstractHttpConfigurer::disable);
         http.sessionManagement(session -> session.invalidSessionUrl(INVALID_SESSION).maximumSessions(1).maxSessionsPreventsLogin(true));
 
         http.authorizeHttpRequests((request) -> request
@@ -37,7 +39,7 @@ public class ProjectSecurityConfiguration {
 
         http.formLogin(withDefaults());
         http.httpBasic(httpBasic -> httpBasic.authenticationEntryPoint(customBasicEntryPoint));
-        http.exceptionHandling(exception -> exception.accessDeniedHandler(new CustomAccessDeniedHandler()) );
+        http.exceptionHandling(exception -> exception.accessDeniedHandler(new CustomAccessDeniedHandler()));
 
         return http.build();
     }
@@ -49,7 +51,7 @@ public class ProjectSecurityConfiguration {
 
 
     @Bean
-    public CorsConfigurationSource customConfigurationSource(){
+    public CorsConfigurationSource customConfigurationSource() {
         return new CustomCorsConfigurationSource();
     }
 }
