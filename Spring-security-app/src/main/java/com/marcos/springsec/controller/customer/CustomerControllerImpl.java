@@ -1,7 +1,7 @@
 package com.marcos.springsec.controller.customer;
 
 import com.marcos.springsec.domain.dto.internal.CustomerRegistrationRequest;
-import com.marcos.springsec.domain.entity.Customer;
+import com.marcos.springsec.domain.dto.internal.UserResponse;
 import com.marcos.springsec.service.customer.CustomerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ public class CustomerControllerImpl implements CustomerController {
     }
 
     @RequestMapping("/user")
-    public Customer getUserDetails(Authentication authentication){
+    public UserResponse getUserDetails(Authentication authentication){
         return userService.getUserDetailsAfterLogin(authentication);
     }
 }

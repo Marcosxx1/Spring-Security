@@ -1,6 +1,7 @@
 package com.marcos.springsec.service.customer;
 
 import com.marcos.springsec.domain.dto.internal.CustomerRegistrationRequest;
+import com.marcos.springsec.domain.dto.internal.UserResponse;
 import com.marcos.springsec.domain.entity.Customer;
 import com.marcos.springsec.exception.ExceptionFactory;
 import com.marcos.springsec.mapper.customer.CustomerMapper;
@@ -9,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import static com.marcos.springsec.mapper.customer.CustomerMapper.toResponse;
 
 
 @Service
@@ -49,8 +52,11 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer getUserDetailsAfterLogin(Authentication authentication) {
-        return customerRepository.findByEmail(authentication.getName())
+    public UserResponse getUserDetailsAfterLogin(Authentication authentication) {
+        var user = customerRepository.findByEmail(authentication.getName())
                 .orElse(null);
+
+        assert user != null;
+        return toResponse(user);
     }
 }
