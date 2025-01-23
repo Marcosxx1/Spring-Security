@@ -1422,3 +1422,60 @@ Para proteger aplicações contra ataques CSRF, é importante implementar medida
     - Exigir autenticação adicional em ações sensíveis (por exemplo, confirmação por senha para alteração de e-mail).
 4. **SameSite Cookies**:
     - Configurar os cookies com a flag `SameSite=strict` ou `SameSite=lax`, restringindo o envio de cookies em requisições de outros domínios.
+
+
+
+
+# Explicação da Configuração de Segurança do Projeto
+
+Esta configuração define a segurança HTTP para um projeto Spring Boot. Vamos detalhar o que cada parte do código faz:
+
+## Configuração de Segurança
+
+```java
+@Configuration
+public class ProjectSecurityConfiguration {
+
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http, CustomBasicEntryPoint customBasicEntryPoint) throws Exception {
+
+        CsrfTokenRequestAttributeHandler csrfTokenRequestAttributeHandler = new CsrfTokenRequestAttributeHandler();
+        http.securityContext(contextConfig -> contextConfig.requireExplicitSave(false))
+                .sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
+                .csrf(csrf -> csrf
+                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                        .csrfTokenRequestHandler(csrfTokenRequestAttributeHandler)
+                ).addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class);
+
+        return http.build();
+    }
+}
+```
+### Explicação:
+
+1. **`CsrfTokenRequestAttributeHandler`**:
+   Cria uma instância para lidar com tokens CSRF.
+
+2. **`securityContext`**:
+   Configura o contexto de segurança para não exigir uma chamada explícita para salvar o contexto.
+
+3. **`sessionManagement`**:
+   Define a política de criação de sessão para sempre criar uma nova sessão.
+
+4. **`csrf`**:
+    - **`csrfTokenRepository`**: Usa `CookieCsrfTokenRepository` para armazenar tokens CSRF em cookies.
+    - **`csrfTokenRequestHandler`**: Define o manipulador de requisições de tokens CSRF.
+
+5. **`addFilterAfter`**:
+   Adiciona o `CsrfCookieFilter` depois do `BasicAuthenticationFilter` na cadeia de filtros.
+
+## Configuração de CORS
+
+```java
+http.cors(cors -> cors.configurationSource(customConfigurationSource()));
+```
+Configura as políticas de CORS (Cross-Origin Resource Sharing) usando uma fonte de configuração personalizada.
+
+Ou seja, essa configuração constrói e retorna a cadeia de segurança configurada.
+
+Essa configuração garante que a aplicação esteja protegida contra ataques CSRF, gerencie sessões de forma eficaz e aplique políticas de CORS apropriadas.
