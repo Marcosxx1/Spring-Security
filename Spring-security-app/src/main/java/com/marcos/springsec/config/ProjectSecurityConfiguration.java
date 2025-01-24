@@ -7,7 +7,6 @@ import com.marcos.springsec.exception.CustomBasicEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,6 +25,7 @@ public class ProjectSecurityConfiguration {
 
     private final String[] AUTHENTICATED_PATHS = {ACCOUNT, BALANCE, CARDS, LOANS};
     private final String[] ALLOWED_PATHS = {CONTACT, NOTICES, ERROR, CUSTOMER, INVALID_SESSION, REGISTER, USER};
+    private final String[] CSRF_IGNORE = {CONTACT, REGISTER};
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http, CustomBasicEntryPoint customBasicEntryPoint) throws Exception {
@@ -36,6 +36,7 @@ public class ProjectSecurityConfiguration {
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                         .csrfTokenRequestHandler(csrfTokenRequestAttributeHandler)
+                        .ignoringRequestMatchers(CSRF_IGNORE)
                 ).addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class);
 
         http.cors(cors -> cors.configurationSource(customConfigurationSource()));
