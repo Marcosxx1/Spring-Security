@@ -7,6 +7,14 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+        <module name="eazyschool-start" />
+=======
+>>>>>>> 5e93977664a3a21556582a002dee68186b729ab6
+        <module name="springsec (1)" />
+>>>>>>> bd56fcb32695ef7b88f5e1c3ef928d5915e6e55c
         <module name="springsec" />
         <module name="springsec (2)" />
       </profile>
@@ -18,6 +26,10 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+<<<<<<< HEAD
+      <module name="eazyschool-start" options="-parameters" />
+=======
+>>>>>>> 5e93977664a3a21556582a002dee68186b729ab6
       <module name="springsec" options="-parameters" />
       <module name="springsec (1)" options="-parameters" />
       <module name="springsec (2)" options="-parameters" />

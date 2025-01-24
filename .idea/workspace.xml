@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="fe963ca8-60e4-4bea-8706-6625728a8e3d" name="Changes" comment="chore: update .gitignore" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="directory" />
+      <option value="module" />
+    </option>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Marcosxx1&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Marcosxx1/Spring-Security.git&quot;,
+    &quot;accountId&quot;: &quot;eac4ff0b-b22f-42cf-b98f-ddbeefa91582&quot;
+  }
+}</component>
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="true" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="jar://$MAVEN_REPOSITORY$/org/springframework/security/spring-security-core/6.4.2/spring-security-core-6.4.2-sources.jar!/org/springframework/security/authentication/dao/DaoAuthenticationProvider.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://$MAVEN_REPOSITORY$/org/springframework/security/spring-security-core/6.4.2/spring-security-core-6.4.2-sources.jar!/org/springframework/security/provisioning/UserDetailsManager.java" root0="SKIP_INSPECTION" />
+  </component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="2r7JxfGEnNQGwAzU0XF9aMbYeFe" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="autoscrollToSource" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+    <option name="showVisibilityIcons" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.BankBackEndApplcation.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AccountTransactionServiceImplTest.testFindCustomerIdOrdered_whenCustomerDontExistis_thenReturnNull.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AccountTransactionServiceImplTest.testFindCustomerIdOrdered_whenCustomerExistis_thenReturnListOfAccountTransactions.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AccountsServiceImplTest.testGetCustomerById_whenCustomerExists_thenReturnCustomer.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.All in springsec (1).executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.All in springsec (2).executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.All in springsec (3).executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CardsServiceImplTest.findCustomerByIdTest_whenCardsDontExist_thenReturnNull.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CardsServiceImplTest.findCustomerByIdTest_whenCardsExist_thenReturnListOfCardsCustomer.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CardsServiceImplTest.findCustomerByIdTest_whenCustomerExist_thenReturnListOfCards.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.LoansServiceImplTest.testFindCustomerLoans_whenCustomerDontExistsByGivenId_thenReturnNull.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.LoansServiceImplTest.testFindCustomerLoans_whenCustomerExistsByGivenId_thenReturnListOfLoans.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.NoticeServiceImplTest.testFindAllActiveNotices_whenThereAreActiveAndInactiveNotices_thenReturnOnlyActiveNotices.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.NoticeServiceImplTest.testFindAllActiveNotices_whenThereAreActiveNotices_thenReturnAllActiveNotices.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.NoticeServiceImplTest.testFindAllActiveNotices_whenThereAreNoActiveAndInactiveNotices_thenReturnNull.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.NoticeServiceImplTest.tetFindAllActiveNotices_whenThereAreActiveNotices_thenReturnAllActiveNotices.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.NoticesControllerTest.testGetNotices_whenActiveNoticesExist_thenReturnNoticesWithStatus200.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.NoticesControllerTest.testGetNotices_whenNoActiveNotices_thenReturnStatus204.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.NoticesControllerTest.testGetNotices_whenServiceThrowsException_thenReturnStatus500.executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;Spring Boot.BankBackEndApplcation.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.EazyschoolApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/marcos.s/IdeaProjects/Spring-Security/Spring-security-app&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.fileTypes&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql_aurora&quot;,
+      &quot;mysql&quot;
+    ]
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\marcos.s\IdeaProjects\Spring-Security\Spring-security-app" />
+      <recent name="C:\Users\marcos.s\IdeaProjects\Spring-Security\src\main\resources" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.marcos.springsec.service.accounttransaction" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.marcos.springsec.exception.exeptions" />
+      <recent name="com.marcos.springsec.exception" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.BankBackEndApplcation">
+    <configuration name="BankBackEndApplcation" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.marcos.springsec.BankBackEndApplcation" />
+      <module name="springsec (1)" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.marcos.springsec.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="Spring-Security" />
+      <working_directory value="$PROJECT_DIR$" />
+      <go_parameters value="-i" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="Spring-Security" />
+      <working_directory value="$PROJECT_DIR$" />
+      <go_parameters value="-i" />
+      <kind value="DIRECTORY" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <method v="2" />
+    </configuration>
+    <configuration name="All in springsec (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="springsec (1)" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="All in springsec (2)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="springsec (1)" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="All in springsec (3)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="springsec (1)" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="NoticesControllerTest.testGetNotices_whenServiceThrowsException_thenReturnStatus500" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="springsec (1)" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.marcos.springsec.controller.notices.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.marcos.springsec.controller.notices" />
+      <option name="MAIN_CLASS_NAME" value="com.marcos.springsec.controller.notices.NoticesControllerTest" />
+      <option name="METHOD_NAME" value="testGetNotices_whenServiceThrowsException_thenReturnStatus500" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="springsec (1)" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BankBackEndApplcation" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="springsec (1)" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.marcos.springsec.BankBackEndApplcation" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="EazyschoolApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="eazyschool-start" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.eazybytes.eazyschool.EazyschoolApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.BankBackEndApplcation" />
+        <item itemvalue="JUnit.All in springsec (2)" />
+        <item itemvalue="JUnit.All in springsec (3)" />
+        <item itemvalue="JUnit.All in springsec (1)" />
+        <item itemvalue="JUnit.NoticesControllerTest.testGetNotices_whenServiceThrowsException_thenReturnStatus500" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.22562.218" />
+        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-IU-243.22562.218" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="fe963ca8-60e4-4bea-8706-6625728a8e3d" name="Changes" comment="" />
+      <created>1735904428132</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1735904428132</updated>
+      <workItem from="1735904429414" duration="3863000" />
+      <workItem from="1735908848941" duration="37744000" />
+      <workItem from="1736280606191" duration="13868000" />
+      <workItem from="1736514648763" duration="10937000" />
+      <workItem from="1736535769025" duration="7719000" />
+      <workItem from="1736775240273" duration="3800000" />
+      <workItem from="1736811379189" duration="33089000" />
+      <workItem from="1736976174427" duration="10449000" />
+      <workItem from="1737042022958" duration="2826000" />
+      <workItem from="1737055179904" duration="24037000" />
+      <workItem from="1737310417013" duration="8674000" />
+      <workItem from="1737510493468" duration="582000" />
+      <workItem from="1737587158625" duration="1762000" />
+      <workItem from="1737658863968" duration="28000" />
+      <workItem from="1737668080522" duration="493000" />
+      <workItem from="1737669457253" duration="105000" />
+    </task>
+    <task id="LOCAL-00001" summary="feat: Implement error handling">
+      <option name="closed" value="true" />
+      <created>1735928732248</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1735928732248</updated>
+    </task>
+    <task id="LOCAL-00002" summary="feat: User registration endpoint">
+      <option name="closed" value="true" />
+      <created>1735928779760</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1735928779760</updated>
+    </task>
+    <task id="LOCAL-00003" summary="shore: Minor adjustments">
+      <option name="closed" value="true" />
+      <created>1735930073494</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1735930073494</updated>
+    </task>
+    <task id="LOCAL-00004" summary="feat: Implement ProjectUserNamePwdAuthenticationProvider to use AuthenticationManager">
+      <option name="closed" value="true" />
+      <created>1736280872966</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1736280872966</updated>
+    </task>
+    <task id="LOCAL-00005" summary="feat: add profiles management">
+      <option name="closed" value="true" />
+      <created>1736281064253</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1736281064253</updated>
+    </task>
+    <task id="LOCAL-00006" summary="feat: Implements customization for AccessDenined Handled and docs">
+      <option name="closed" value="true" />
+      <created>1736531516263</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1736531516263</updated>
+    </task>
+    <task id="LOCAL-00007" summary="feat: implement enhanced logout">
+      <option name="closed" value="true" />
+      <created>1736862995474</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1736862995474</updated>
+    </task>
+    <task id="LOCAL-00008" summary="feat: Using thymeleaf with security">
+      <option name="closed" value="true" />
+      <created>1736863086226</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1736863086226</updated>
+    </task>
+    <task id="LOCAL-00009" summary="doc: SecurityContext e SecurityContextHolder">
+      <option name="closed" value="true" />
+      <created>1736865651644</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1736865651644</updated>
+    </task>
+    <task id="LOCAL-00010" summary="feat: Add Angular project to learn CORs and CSRF">
+      <option name="closed" value="true" />
+      <created>1736950460015</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1736950460015</updated>
+    </task>
+    <task id="LOCAL-00011" summary="feat: Add Angular project to learn CORs and CSRF">
+      <option name="closed" value="true" />
+      <created>1736950547780</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1736950547780</updated>
+    </task>
+    <task id="LOCAL-00012" summary="feat: Create new entities">
+      <option name="closed" value="true" />
+      <created>1736967357497</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1736967357497</updated>
+    </task>
+    <task id="LOCAL-00013" summary="refactor: Remove commentaries">
+      <option name="closed" value="true" />
+      <created>1736970599436</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1736970599436</updated>
+    </task>
+    <task id="LOCAL-00014" summary="refactor: controllers / Services and implement tests">
+      <option name="closed" value="true" />
+      <created>1737059733227</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1737059733227</updated>
+    </task>
+    <task id="LOCAL-00015" summary="refactor: Contact controller, repository and service">
+      <option name="closed" value="true" />
+      <created>1737061165970</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1737061165970</updated>
+    </task>
+    <task id="LOCAL-00016" summary="refactor/feat: Refactor Notices / Implement tests">
+      <option name="closed" value="true" />
+      <created>1737122744215</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1737122744215</updated>
+    </task>
+    <task id="LOCAL-00017" summary="feat&gt; Fix a bug where it wasn't being possible to save a user (customer)">
+      <option name="closed" value="true" />
+      <created>1737153822935</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1737153822935</updated>
+    </task>
+    <task id="LOCAL-00018" summary="feat: Cors implementation and README update">
+      <option name="closed" value="true" />
+      <created>1737318870634</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1737318870634</updated>
+    </task>
+    <task id="LOCAL-00019" summary="chore: update .gitignore">
+      <option name="closed" value="true" />
+      <created>1737319007627</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1737319007627</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="feat: Implement error handling" />
+    <MESSAGE value="feat: User registration endpoint" />
+    <MESSAGE value="shore: Minor adjustments" />
+    <MESSAGE value="feat: Implement ProjectUserNamePwdAuthenticationProvider to use AuthenticationManager" />
+    <MESSAGE value="feat: add profiles management" />
+    <MESSAGE value="feat: Implements customization for AccessDenined Handled and docs" />
+    <MESSAGE value="feat: implement enhanced logout" />
+    <MESSAGE value="feat: Using thymeleaf with security" />
+    <MESSAGE value="doc: SecurityContext e SecurityContextHolder" />
+    <MESSAGE value="feat: Add Angular project to learn CORs and CSRF" />
+    <MESSAGE value="feat: Create new entities" />
+    <MESSAGE value="refactor: Remove commentaries" />
+    <MESSAGE value="refactor: controllers / Services and implement tests" />
+    <MESSAGE value="refactor: Contact controller, repository and service" />
+    <MESSAGE value="refactor/feat: Refactor Notices / Implement tests" />
+    <MESSAGE value="feat&gt; Fix a bug where it wasn't being possible to save a user (customer)" />
+    <MESSAGE value="feat: Cors implementation and README update" />
+    <MESSAGE value="chore: update .gitignore" />
+    <option name="LAST_COMMIT_MESSAGE" value="chore: update .gitignore" />
+  </component>
+  <component name="VgoProject">
+    <integration-enabled>false</integration-enabled>
+    <settings-migrated>true</settings-migrated>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/marcos/springsec/controller/customer/CustomerControllerImpl.java</url>
+          <line>12</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$MAVEN_REPOSITORY$/org/springframework/security/spring-security-web/6.4.2/spring-security-web-6.4.2-sources.jar!/org/springframework/security/web/authentication/www/BasicAuthenticationEntryPoint.java</url>
+          <line>54</line>
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$MAVEN_REPOSITORY$/org/springframework/spring-webmvc/6.2.1/spring-webmvc-6.2.1-sources.jar!/org/springframework/web/servlet/resource/NoResourceFoundException.java</url>
+          <line>35</line>
+          <option name="timeStamp" value="21" />
+        </line-breakpoint>
+        <breakpoint type="java-exception">
+          <properties class="java.lang.AbstractMethodError" package="java.lang" />
+          <option name="timeStamp" value="8" />
+        </breakpoint>
+        <breakpoint type="java-exception">
+          <properties class="com.marcos.springsec.exception.exeptions.ResourceNotFoundException" package="com.marcos.springsec.exception.exeptions" />
+          <option name="timeStamp" value="12" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

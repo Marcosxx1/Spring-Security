@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="451aa0df-154a-4096-8ebe-91e2eee48cf8" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../img.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../img_1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../img_2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/BankBackEndApplcation.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/config/ProjectSecurityConfiguration.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/config/ProjectUserNamePwdAuthenticationProvider.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/constants/PathConstants.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/controller/account/AccountController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/controller/account/AccountControllerImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/controller/balance/BalanceController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/controller/balance/BalanceControllerImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/controller/cards/CardsController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/controller/cards/CardsControllerImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/controller/contact/ContactController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/controller/contact/ContactControllerImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/controller/customer/CustomerController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/controller/customer/CustomerControllerImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/controller/loans/LoansController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/controller/loans/LoansControllerImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/controller/notices/NoticesController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/controller/notices/NoticesControllerImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/domain/dto/errors/ErrorResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/domain/dto/errors/ValidationErrorResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/domain/dto/internal/CustomerRegistrationRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/domain/entity/Customer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/exception/ApiExceptionHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/exception/CustomAccessDeniedHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/exception/CustomBasicEntryPoint.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/exception/CustomHttpException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/exception/ErrorMessages.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/exception/ExceptionFactory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/exception/exeptions/CustomerAlreadyExistsException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/exception/exeptions/InternalServerException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/exception/exeptions/ResourceNotFoundException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/exception/util/CommonMessageSource.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/exception/util/LocaleConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/exception/util/MessageSourceAcessorLocal.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/mapper/customer/CustomerMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/repository/customer/CustomerRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/service/customer/CustomerService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/service/customer/CustomerServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/service/userdetails/ProjectUserDetailsService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/marcos/springsec/service/userdetails/ProjectUserDetailsServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/application.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/application_prod.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/messages.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/messages_ptbr.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/sql/tables.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/test/java/com/marcos/springsec/BankBackEndApplcationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/test/java/com/marcos/springsec/controller/customer/CustomerControllerTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/test/java/com/marcos/springsec/service/customer/CustomerServiceTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../test.txt" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "Marcosxx1"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Marcosxx1/Spring-Security.git",
+    "accountId": "eac4ff0b-b22f-42cf-b98f-ddbeefa91582"
+  }
+}]]></component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 5
+}]]></component>
+  <component name="ProjectId" id="2rd9s1rBARUojdeNnna9sM5gv2t" />
+  <component name="ProjectViewState">
+    <option name="autoscrollToSource" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+    <option name="showVisibilityIcons" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "git-widget-placeholder": "main",
+    "go.import.settings.migrated": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/marcos.s/IdeaProjects/Spring-Security/eazybank-start",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\IntelliJ IDEA 2024.2.3\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.22562.218" />
+        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-IU-243.22562.218" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="451aa0df-154a-4096-8ebe-91e2eee48cf8" name="Changes" comment="" />
+      <created>1736878288048</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1736878288048</updated>
+      <workItem from="1736878289260" duration="105000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VgoProject">
+    <settings-migrated>true</settings-migrated>
+  </component>
+</project>
