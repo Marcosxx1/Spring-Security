@@ -186,7 +186,7 @@ Classe disponível no pacote `com.marcos.springsec.config`.
 ---
  
 ## UserDetails e Authentication: Relação entre Elas
-![img.png](img.png) (*cortesia de eazybytes*)
+![img.png](example_images/img!!.png) (*cortesia de eazybytes*)
 ### Estrutura de Herança
 A relação entre `UserDetails` e `Authentication` é essencial no Spring Security para a autenticação e autorização de usuários.
 `UserDetails` representa os dados do usuário, como nome, senha e permissões, carregados de um sistema de armazenamento por meio
@@ -780,7 +780,7 @@ Se em algum cenário específico for necessário aceitar apenas tráfego **HTTP*
 - Em casos excepcionais, podemos optar por aceitar tráfego **HTTP** usando `requiresInsecure()`, mas isso deve ser feito com cautela.
 
 ## Erro
-![img_1.png](img_1.png)
+![img_1.png](example_images/img_!!!.png)
 Mesmo com minhas ratativas de erro com o ExceptionFactory e resourceNotFoundException, estáva recebendo esse erro não tratado
 
 O código que estava causando o erro:
@@ -1221,7 +1221,7 @@ Depois, basta utilizarmos os valores:
 
 ## O papel de `SecurityContext` e `SecurityContextHolder` 
 
-![img_2.png](img_2.png)
+![img_2.png](example_images/img_!!!!!.png)
 (_cortesia de EazyBytes_)
 
 O `SecurityContext` e o `SecurityContextHolder` desempenham papéis fundamentais no modelo de autenticação do Spring Security. O `SecurityContextHolder` é a classe que armazena os detalhes do contexto de segurança atual, incluindo informações sobre o principal (usuário) que está interagindo com a aplicação. Por padrão, o `SecurityContextHolder` utiliza um `ThreadLocal` para manter o contexto de segurança, garantindo que ele esteja disponível para métodos executados na mesma thread, mesmo sem ser passado explicitamente como argumento.
@@ -1426,7 +1426,7 @@ Para proteger aplicações contra ataques CSRF, é importante implementar medida
 
 
 
-# Explicação da Configuração de Segurança do Projeto
+## Explicação da Configuração de Segurança do Projeto
 
 Esta configuração define a segurança HTTP para um projeto Spring Boot. Vamos detalhar o que cada parte do código faz:
 
@@ -1451,6 +1451,27 @@ public class ProjectSecurityConfiguration {
     }
 }
 ```
+
+## Importante 
+```json
+{
+	"timestamp": "2025-01-23T19:39:29.139201700",
+	"status": 403,
+	"error": "Forbidden",
+	"message": "Invalid CSRF Token 'null' was found on the request parameter '_csrf' or header 'X-XSRF-TOKEN'.",
+	"path": "/customer/register"
+}
+```
+Um erro que tive foi esquecer de usar o o HEADER correto `X-XSRF-TOKEN`
+Sempre que fizermos uma solicitação para o servidor e o servidor não encontrar um cookie `XSRF-TOKEN` na solicitação
+será gerado um novo token e o envia de volta ao cliente no `cabeçalho` de resposta como `X-XSRF-TOKEN`
+
+Fiz a solicitação que deu certo inicialmente, mas nas subsequentes estava recebendo o erro de cima porque na primeira 
+eu recebi o token ![img.png](example_images/img!!.png) mas não estava utilizando no `cabeçalho`:![img_1.png](example_images/img_!!!.png)
+
+Que se resolve simplesmente utilizando o coockie:
+![img_2.png](example_images/img_!!!!!.png)
+
 ### Explicação:
 
 1. **`CsrfTokenRequestAttributeHandler`**:
