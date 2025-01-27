@@ -262,3 +262,20 @@ CREATE TABLE `contact_messages`
     `create_dt`     date DEFAULT NULL,
     PRIMARY KEY (`contact_id`)
 );
+
+CREATE TABLE `authorities`
+(
+    `id`          int         not null auto_increment,
+    `customer_id` int         not null,
+    `name`        varchar(50) not null,
+    primary key (`id`),
+    KEY `customer` (`customer_id`),
+    constraint `authoritiesibfk_1` foreign key (`customer_id`) references `customer` (`customer_id`)
+),
+
+INSERT INTO `authorities` (`customer_id`, `name`)
+values
+    (1, 'VIEWACCOUNT'),
+    (1, 'VIEWCARDS'),
+    (1, 'VIEWLOANS'),
+    (1, 'VIEWBALANCE')

@@ -44,10 +44,8 @@
 - [O papel de `SecurityContext` e `SecurityContextHolder` ](#o-papel-de-securitycontext-e-securitycontextholder-)
 - [(CORS) CROSS-ORIGIN RESOURCE SHARING ](#cors-cross-origin-resource-sharing)
 - [O que é um ataque Cross-Site Request Forgery (CSRF ou XSRF) ](#o-que-é-um-ataque-cross-site-request-forgery-csrf-ou-xsrf)
+- [Authentication Vs Authorization](#authentication-vs-authorization)
 
-
-  
- 
 
 
 ---
@@ -1500,3 +1498,56 @@ Configura as políticas de CORS (Cross-Origin Resource Sharing) usando uma fonte
 Ou seja, essa configuração constrói e retorna a cadeia de segurança configurada.
 
 Essa configuração garante que a aplicação esteja protegida contra ataques CSRF, gerencie sessões de forma eficaz e aplique políticas de CORS apropriadas.
+
+
+
+
+Sua explicação está bem fundamentada e cobre os conceitos de **Authentication** (autenticação) e **Authorization** (autorização) de forma clara. No entanto, alguns pequenos ajustes podem melhorar a precisão e a consistência da explicação. Abaixo, destaco os pontos ajustados ou complementados:
+
+---
+
+### Authentication:
+1. Na autenticação, a **identidade do usuário** é verificada para conceder acesso ao sistema.
+2. **Authentication (AuthN)** ocorre antes de **Authorization (AuthZ)**.
+3. Apenas exige os **detalhes de login do usuário**, como nome de usuário e senha.
+4. Se a autenticação falhar, o erro retornado será geralmente **401 (Unauthorized)**.
+5. Por exemplo: Para um empregado ou cliente de um banco executar ações em uma aplicação, ele deve **primeiro provar sua identidade**.
+
+---
+
+### Authorization:
+1. Na autorização, os **papéis e permissões (autoridades)** do usuário na aplicação são verificados para determinar o acesso a recursos específicos.
+2. **Authorization (AuthZ)** sempre ocorre **depois da autenticação**.
+3. Depende das **permissões, papéis ou privilégios** do usuário.
+4. Se a autorização falhar, o erro retornado será geralmente **403 (Forbidden)**.
+5. Por exemplo: Depois de fazer login na aplicação, meus **papéis e permissões** determinarão quais tipos de ações posso executar, como acesso a dados sensíveis ou funcionalidades específicas.
+
+---
+
+### Como `Authorities` são armazenadas dentro do Spring Security:
+1. Informações sobre **authorities (permissões)** ou **roles (papéis)** no Spring Security são armazenadas dentro da interface `GrantedAuthority`, que possui apenas um método que retorna o nome da `authority` ou `role`.
+
+**Exemplo:**
+```java
+public interface GrantedAuthority {
+    String getAuthority();
+}
+```
+
+**Implementação da classe `SimpleGrantedAuthority`:**
+```java
+import org.springframework.security.core.GrantedAuthority;
+
+public final class SimpleGrantedAuthority implements GrantedAuthority {
+    private final String role;
+
+    public SimpleGrantedAuthority(String role) {
+        this.role = role;
+    }
+
+    @Override
+    public String getAuthority() {
+        return this.role;
+    }
+}
+```
