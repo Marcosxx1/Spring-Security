@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fe963ca8-60e4-4bea-8706-6625728a8e3d" name="Changes" comment="chore: update .gitignore" />
+    <list default="true" id="fe963ca8-60e4-4bea-8706-6625728a8e3d" name="Changes" comment="feat: Create Authorities class, relationship with Customer, configure to add the authorities to user">
+      <change afterPath="$PROJECT_DIR$/Spring-security-app/src/test/java/com/marcos/springsec/service/userdetails/ProjectUserDetailsServiceImplTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring-security-app/src/main/java/com/marcos/springsec/config/ProjectSecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/Spring-security-app/src/main/java/com/marcos/springsec/config/ProjectSecurityConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eazybank-start/bank-app-ui/src/app/components/login/login.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/eazybank-start/bank-app-ui/src/app/components/login/login.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eazybank-start/bank-app-ui/src/app/components/logout/logout.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/eazybank-start/bank-app-ui/src/app/components/logout/logout.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eazybank-start/bank-app-ui/src/app/interceptors/app.request.interceptor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/eazybank-start/bank-app-ui/src/app/interceptors/app.request.interceptor.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eazybank-start/bank-app-ui/src/app/services/dashboard/dashboard.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/eazybank-start/bank-app-ui/src/app/services/dashboard/dashboard.service.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -69,59 +76,62 @@
     <option name="showMembers" value="true" />
     <option name="showVisibilityIcons" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.BankBackEndApplcation.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.AccountTransactionServiceImplTest.testFindCustomerIdOrdered_whenCustomerDontExistis_thenReturnNull.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.AccountTransactionServiceImplTest.testFindCustomerIdOrdered_whenCustomerExistis_thenReturnListOfAccountTransactions.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.AccountsServiceImplTest.testGetCustomerById_whenCustomerExists_thenReturnCustomer.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.All in springsec (1).executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.All in springsec (2).executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.All in springsec (3).executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CardsServiceImplTest.findCustomerByIdTest_whenCardsDontExist_thenReturnNull.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CardsServiceImplTest.findCustomerByIdTest_whenCardsExist_thenReturnListOfCardsCustomer.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CardsServiceImplTest.findCustomerByIdTest_whenCustomerExist_thenReturnListOfCards.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.LoansServiceImplTest.testFindCustomerLoans_whenCustomerDontExistsByGivenId_thenReturnNull.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.LoansServiceImplTest.testFindCustomerLoans_whenCustomerExistsByGivenId_thenReturnListOfLoans.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.NoticeServiceImplTest.testFindAllActiveNotices_whenThereAreActiveAndInactiveNotices_thenReturnOnlyActiveNotices.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.NoticeServiceImplTest.testFindAllActiveNotices_whenThereAreActiveNotices_thenReturnAllActiveNotices.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.NoticeServiceImplTest.testFindAllActiveNotices_whenThereAreNoActiveAndInactiveNotices_thenReturnNull.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.NoticeServiceImplTest.tetFindAllActiveNotices_whenThereAreActiveNotices_thenReturnAllActiveNotices.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.NoticesControllerTest.testGetNotices_whenActiveNoticesExist_thenReturnNoticesWithStatus200.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.NoticesControllerTest.testGetNotices_whenNoActiveNotices_thenReturnStatus204.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.NoticesControllerTest.testGetNotices_whenServiceThrowsException_thenReturnStatus500.executor&quot;: &quot;Run&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
-    &quot;Spring Boot.BankBackEndApplcation.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.EazyschoolApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/marcos.s/IdeaProjects/Spring-Security/Spring-security-app&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.fileTypes&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.BankBackEndApplcation.executor": "Run",
+    "JUnit.AccountTransactionServiceImplTest.testFindCustomerIdOrdered_whenCustomerDontExistis_thenReturnNull.executor": "Run",
+    "JUnit.AccountTransactionServiceImplTest.testFindCustomerIdOrdered_whenCustomerExistis_thenReturnListOfAccountTransactions.executor": "Run",
+    "JUnit.AccountsServiceImplTest.testGetCustomerById_whenCustomerExists_thenReturnCustomer.executor": "Run",
+    "JUnit.All in springsec (1).executor": "Run",
+    "JUnit.All in springsec (2).executor": "Run",
+    "JUnit.All in springsec (3).executor": "Run",
+    "JUnit.All in springsec (4).executor": "Run",
+    "JUnit.CardsServiceImplTest.findCustomerByIdTest_whenCardsDontExist_thenReturnNull.executor": "Run",
+    "JUnit.CardsServiceImplTest.findCustomerByIdTest_whenCardsExist_thenReturnListOfCardsCustomer.executor": "Run",
+    "JUnit.CardsServiceImplTest.findCustomerByIdTest_whenCustomerExist_thenReturnListOfCards.executor": "Run",
+    "JUnit.LoansServiceImplTest.testFindCustomerLoans_whenCustomerDontExistsByGivenId_thenReturnNull.executor": "Run",
+    "JUnit.LoansServiceImplTest.testFindCustomerLoans_whenCustomerExistsByGivenId_thenReturnListOfLoans.executor": "Run",
+    "JUnit.NoticeServiceImplTest.testFindAllActiveNotices_whenThereAreActiveAndInactiveNotices_thenReturnOnlyActiveNotices.executor": "Run",
+    "JUnit.NoticeServiceImplTest.testFindAllActiveNotices_whenThereAreActiveNotices_thenReturnAllActiveNotices.executor": "Run",
+    "JUnit.NoticeServiceImplTest.testFindAllActiveNotices_whenThereAreNoActiveAndInactiveNotices_thenReturnNull.executor": "Run",
+    "JUnit.NoticeServiceImplTest.tetFindAllActiveNotices_whenThereAreActiveNotices_thenReturnAllActiveNotices.executor": "Run",
+    "JUnit.NoticesControllerTest.testGetNotices_whenActiveNoticesExist_thenReturnNoticesWithStatus200.executor": "Run",
+    "JUnit.NoticesControllerTest.testGetNotices_whenNoActiveNotices_thenReturnStatus204.executor": "Run",
+    "JUnit.NoticesControllerTest.testGetNotices_whenServiceThrowsException_thenReturnStatus500.executor": "Run",
+    "JUnit.ProjectUserDetailsServiceImplTest.executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "Spring Boot.BankBackEndApplcation.executor": "Run",
+    "Spring Boot.EazyschoolApplication.executor": "Run",
+    "git-widget-placeholder": "main",
+    "go.import.settings.migrated": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/marcos.s/IdeaProjects/Spring-Security/Spring-security-app",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.fileTypes",
+    "ts.external.directory.path": "C:\\Users\\marcos.s\\IdeaProjects\\Spring-Security\\eazybank-start\\bank-app-ui\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mysql_aurora&quot;,
-      &quot;mysql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql_aurora",
+      "mysql"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\marcos.s\IdeaProjects\Spring-Security\Spring-security-app" />
@@ -135,7 +145,7 @@
       <recent name="com.marcos.springsec.exception" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.BankBackEndApplcation">
+  <component name="RunManager" selected="JUnit.All in springsec (4)">
     <configuration name="BankBackEndApplcation" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.marcos.springsec.BankBackEndApplcation" />
       <module name="springsec (1)" />
@@ -168,14 +178,6 @@
       <framework value="gotest" />
       <method v="2" />
     </configuration>
-    <configuration name="All in springsec (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="springsec (1)" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="TEST_OBJECT" value="package" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="All in springsec (2)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="springsec (1)" />
       <option name="PACKAGE_NAME" value="" />
@@ -192,18 +194,25 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="NoticesControllerTest.testGetNotices_whenServiceThrowsException_thenReturnStatus500" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="All in springsec (4)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="springsec (1)" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ProjectUserDetailsServiceImplTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="springsec (1)" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.marcos.springsec.controller.notices.*" />
+          <option name="PATTERN" value="com.marcos.springsec.service.userdetails.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.marcos.springsec.controller.notices" />
-      <option name="MAIN_CLASS_NAME" value="com.marcos.springsec.controller.notices.NoticesControllerTest" />
-      <option name="METHOD_NAME" value="testGetNotices_whenServiceThrowsException_thenReturnStatus500" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="PACKAGE_NAME" value="com.marcos.springsec.service.userdetails" />
+      <option name="MAIN_CLASS_NAME" value="com.marcos.springsec.service.userdetails.ProjectUserDetailsServiceImplTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -232,11 +241,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.All in springsec (4)" />
+        <item itemvalue="JUnit.ProjectUserDetailsServiceImplTest" />
         <item itemvalue="Application.BankBackEndApplcation" />
         <item itemvalue="JUnit.All in springsec (2)" />
         <item itemvalue="JUnit.All in springsec (3)" />
-        <item itemvalue="JUnit.All in springsec (1)" />
-        <item itemvalue="JUnit.NoticesControllerTest.testGetNotices_whenServiceThrowsException_thenReturnStatus500" />
       </list>
     </recent_temporary>
   </component>
@@ -272,6 +281,7 @@
       <workItem from="1737658863968" duration="28000" />
       <workItem from="1737668080522" duration="493000" />
       <workItem from="1737669457253" duration="105000" />
+      <workItem from="1737989199525" duration="27600000" />
     </task>
     <task id="LOCAL-00001" summary="feat: Implement error handling">
       <option name="closed" value="true" />
@@ -425,7 +435,23 @@
       <option name="project" value="LOCAL" />
       <updated>1737319007627</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="feat: create Authorities, Customer, update README and tables.sql">
+      <option name="closed" value="true" />
+      <created>1737996881230</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1737996881230</updated>
+    </task>
+    <task id="LOCAL-00021" summary="feat: Create Authorities class, relationship with Customer, configure to add the authorities to user">
+      <option name="closed" value="true" />
+      <created>1738016204580</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1738016204580</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -461,7 +487,9 @@
     <MESSAGE value="feat&gt; Fix a bug where it wasn't being possible to save a user (customer)" />
     <MESSAGE value="feat: Cors implementation and README update" />
     <MESSAGE value="chore: update .gitignore" />
-    <option name="LAST_COMMIT_MESSAGE" value="chore: update .gitignore" />
+    <MESSAGE value="feat: create Authorities, Customer, update README and tables.sql" />
+    <MESSAGE value="feat: Create Authorities class, relationship with Customer, configure to add the authorities to user" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: Create Authorities class, relationship with Customer, configure to add the authorities to user" />
   </component>
   <component name="VgoProject">
     <integration-enabled>false</integration-enabled>
@@ -485,6 +513,16 @@
           <line>35</line>
           <option name="timeStamp" value="21" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/Spring-security-app/src/main/java/com/marcos/springsec/config/ProjectUserNamePwdAuthenticationProvider.java</url>
+          <line>26</line>
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/Spring-security-app/src/main/java/com/marcos/springsec/service/customer/CustomerServiceImpl.java</url>
+          <line>25</line>
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
         <breakpoint type="java-exception">
           <properties class="java.lang.AbstractMethodError" package="java.lang" />
           <option name="timeStamp" value="8" />
@@ -492,6 +530,10 @@
         <breakpoint type="java-exception">
           <properties class="com.marcos.springsec.exception.exeptions.ResourceNotFoundException" package="com.marcos.springsec.exception.exeptions" />
           <option name="timeStamp" value="12" />
+        </breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.util.ConcurrentModificationException" package="java.util" />
+          <option name="timeStamp" value="27" />
         </breakpoint>
       </breakpoints>
     </breakpoint-manager>

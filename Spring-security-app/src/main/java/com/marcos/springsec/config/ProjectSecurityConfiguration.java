@@ -31,7 +31,7 @@ public class ProjectSecurityConfiguration {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http, CustomBasicEntryPoint customBasicEntryPoint) throws Exception {
 
-        /*CsrfTokenRequestAttributeHandler csrfTokenRequestAttributeHandler = new CsrfTokenRequestAttributeHandler();
+        CsrfTokenRequestAttributeHandler csrfTokenRequestAttributeHandler = new CsrfTokenRequestAttributeHandler();
         http.securityContext(contextConfig -> contextConfig.requireExplicitSave(false))
                 .sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
                 .csrf(csrf -> csrf
@@ -40,11 +40,11 @@ public class ProjectSecurityConfiguration {
                         .ignoringRequestMatchers(CSRF_IGNORE)
                 ).addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class);
 
-        http.cors(cors -> cors.configurationSource(customConfigurationSource()));*/
+        http.cors(cors -> cors.configurationSource(customConfigurationSource()));
 
-        // Comentar o código acima, e descomentar o abaixo para testes
+        /*// Comentar o código acima, e descomentar o abaixo para testes
         http.csrf(AbstractHttpConfigurer::disable);
-        http.cors(AbstractHttpConfigurer::disable);
+        http.cors(AbstractHttpConfigurer::disable);*/
         http.sessionManagement(session -> session.invalidSessionUrl(INVALID_SESSION).maximumSessions(1).maxSessionsPreventsLogin(true));
 
         http.authorizeHttpRequests((request) -> request

@@ -1,0 +1,5 @@
+{
+	"type": "error",
+	"title": "Bad gateway",
+	"detail": "Invalid response received from one or more services"
+}

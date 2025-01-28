@@ -1,24 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ExternalStorageConfigurationManager" enabled="true" />
-<<<<<<< HEAD
-=======
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
-<<<<<<< HEAD
         <option value="$PROJECT_DIR$/eazyschool-start/pom.xml" />
-=======
->>>>>>> 5e93977664a3a21556582a002dee68186b729ab6
         <option value="$PROJECT_DIR$/Spring-security-app/pom.xml" />
       </list>
     </option>
   </component>
-<<<<<<< HEAD
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_23" project-jdk-name="openjdk-23 (2)" project-jdk-type="JavaSDK" />
-=======
->>>>>>> bd56fcb32695ef7b88f5e1c3ef928d5915e6e55c
   <component name="ProjectRootManager" version="2" project-jdk-name="openjdk-23" project-jdk-type="JavaSDK" />
->>>>>>> 5e93977664a3a21556582a002dee68186b729ab6
 </project>

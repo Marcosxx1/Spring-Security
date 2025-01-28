@@ -1,0 +1,8 @@
+{
+	"type": "validation error",
+	"title": "Bad Request",
+	"detail": "Message error",
+	"params": {
+		"additionalProp1": ""
+	}
+}

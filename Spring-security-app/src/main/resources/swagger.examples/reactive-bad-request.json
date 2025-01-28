@@ -1,0 +1,7 @@
+{
+	"type": "error",
+	"title": "error",
+	"detail": {
+		"message": "Reseller not discontinued."
+	}
+}
