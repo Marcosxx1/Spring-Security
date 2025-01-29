@@ -1,5 +1,0 @@
-{
-	"type": "error",
-	"title": "User not authenticated or expired",
-	"detail": "Full authentication is required to access resource"
-}

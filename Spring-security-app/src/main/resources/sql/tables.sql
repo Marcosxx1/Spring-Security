@@ -279,3 +279,6 @@ values
     (1, 'VIEWCARDS'),
     (1, 'VIEWLOANS'),
     (1, 'VIEWBALANCE')
+
+
+select * from accounts

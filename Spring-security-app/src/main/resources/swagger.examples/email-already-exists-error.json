@@ -1,5 +1,0 @@
-{
-	"type": "error",
-	"title": "Email already in use",
-	"detail": "User already registered with email provided"
-}
