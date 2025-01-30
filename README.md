@@ -45,6 +45,10 @@
 - [(CORS) CROSS-ORIGIN RESOURCE SHARING ](#cors-cross-origin-resource-sharing)
 - [O que é um ataque Cross-Site Request Forgery (CSRF ou XSRF) ](#o-que-é-um-ataque-cross-site-request-forgery-csrf-ou-xsrf)
 - [Authentication Vs Authorization](#authentication-vs-authorization)
+- [Autorização com Escopo Global e Granular no Spring Security
+  ](#autorização-com-escopo-global-e-granular-no-spring-security)
+    - [Authority vs Role no Spring Security](#authority-vs-role-no-spring-security)
+
 
 
 
@@ -882,7 +886,7 @@ Este guia demonstra como criar e configurar um AccessDeniedHandler personalizado
 
 #### 1. Criar uma implementação de `AccessDeniedHandler`
 
-Crie uma classe que implemente a interface `AccessDeniedHandler` e sobrescreva o método `handle()`. Dentro deste método, você pode definir a lógica para a resposta que será enviada ao cliente.
+Crie uma classe que implemente a interface `AccessDeniedHandler` e sobrescreva o método `handle()`. Dentro deste método, podems definir a lógica para a resposta que será enviada ao cliente.
 
 ```java
 import org.springframework.http.HttpStatus;
@@ -929,7 +933,7 @@ public class SecurityConfig {
     - Não é necessário utilizar o método `.accessDeniedPage()` em APIs REST, pois a resposta já será enviada no formato JSON ou conforme definido no `CustomAccessDeniedHandler`.
 
 - **Para Aplicações com UI:**
-    - Caso esteja lidando com uma interface de usuário, você pode ativar o redirecionamento para uma página específica utilizando `.accessDeniedPage()`. Isso é útil para exibir uma página de erro amigável ao usuário.
+    - Caso esteja lidando com uma interface de usuário, podemos ativar o redirecionamento para uma página específica utilizando `.accessDeniedPage()`. Isso é útil para exibir uma página de erro amigável ao usuário.
  
  
 ## Lidando com Sessões no Spring Boot
@@ -1551,3 +1555,196 @@ public final class SimpleGrantedAuthority implements GrantedAuthority {
     }
 }
 ```
+
+
+## Autorização com Escopo Global e Granular no Spring Security
+
+No Spring Security, podemos configurar a autorização de acesso de duas formas principais: **globalmente**, para todas as rotas, ou de forma **granular**, diretamente nos métodos ou endpoints específicos.
+
+### Configuração Global
+
+Para definir as autorizações globalmente, utilizamos uma classe de configuração com o `SecurityFilterChain`. Por exemplo:
+
+```java
+@Configuration
+public class ProjectSecurityConfiguration {
+
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests((requests) -> requests
+                .requestMatchers("/user").hasAuthority("USER")
+                .requestMatchers("/admin").hasAuthority("ADMIN")
+                .requestMatchers("/anonymous").hasAnyAuthority("USER", "ADMIN")
+                .requestMatchers("/dashboard").permitAll());
+        return http.build();
+    }
+}
+```
+
+Neste caso, todas as autorizações estão centralizadas, definindo quem pode acessar cada rota usando o método `.hasAuthority()` dentro de `requestMatchers()`. Isso facilita a manutenção, pois a configuração está concentrada em um único local.
+
+---
+
+### Configuração Granular
+
+Também podemos optar por uma abordagem mais detalhada, configurando a autorização diretamente nos métodos ou controladores. Para isso, ativamos a segurança baseada em métodos com a anotação `@EnableMethodSecurity(prePostEnabled = true)` na classe de configuração:
+
+```java
+@Configuration
+@EnableMethodSecurity(prePostEnabled = true)
+public class ProjectSecurityConfiguration { 
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        // Configurações globais podem coexistir com autorizações por método.
+        return http.build();
+    }
+}
+```
+
+Com essa configuração, é possível utilizar anotações como `@PreAuthorize` diretamente nos controladores:
+
+```java
+@RestController
+@RequiredArgsConstructor
+@PreAuthorize("hasAuthority('VIEWACCOUNT')")
+public class AccountControllerImpl {
+
+    private final AccountService accountService;
+
+    @GetMapping("/myAccount")
+    public Accounts getAccountDetails(@RequestParam Long id) {
+        return accountService.findCustomerById(id);
+    }
+}
+```
+
+Nesse exemplo, o acesso ao endpoint `/myAccount` será restrito apenas aos usuários com a autoridade `VIEWACCOUNT`. Essa abordagem é ideal para cenários onde os requisitos de autorização variam entre diferentes endpoints.
+
+---
+
+
+## Authority vs Role no Spring Security
+
+No Spring Security, o controle de acesso é baseado em **Authorities** e **Roles**, conceitos semelhantes, mas com diferenças importantes:
+
+### **Authority**
+- **Definição**: Representa um privilégio individual ou uma ação específica que um usuário pode realizar.
+- **Uso**: Ideal para restringir acesso de forma granular a funcionalidades específicas.
+- **Exemplo**:
+    - `VIEWACCOUNT`: Permite acesso à seção de contas.
+    - `VIEWCARDS`: Permite acesso à seção de cartões.
+
+Um usuário com uma **Authority** específica terá acesso limitado apenas à funcionalidade representada por essa Authority.
+
+---
+
+### **Role**
+- **Definição**: Representa um grupo de privilégios e ações (Authorities) organizados de forma a definir responsabilidades mais amplas.
+- **Uso**: Ideal para restringir acesso de forma mais abrangente, agrupando várias Authorities sob uma Role.
+- **Exemplo**:
+    - `ROLE_ADMIN`: Pode incluir permissões para gerenciar contas, cartões e usuários.
+    - `ROLE_USER`: Pode incluir permissões para visualizar contas e cartões.
+
+Por exemplo, um usuário com a Role `ROLE_ADMIN` poderá acessar múltiplos recursos, enquanto um usuário com a Authority `VIEWCARDS` estará limitado apenas à seção de cartões.
+
+---
+
+### Diferenças e Considerações
+
+1. **Granularidade**:
+    - Authorities são mais específicas e indicam ações individuais.
+    - Roles agrupam múltiplas Authorities para definir um nível de acesso mais geral.
+
+2. **Nomes Arbitrários**:
+    - Os nomes das Authorities e Roles podem ser definidos conforme a necessidade do negócio.
+    - Para que o Spring Security diferencie Roles de Authorities, o prefixo `ROLE_` deve ser usado ao definir Roles.
+
+3. **Customização de Prefixos**:
+    - É possível alterar o prefixo padrão `ROLE_` para outro, utilizando um bean `GrantedAuthorityDefaults`. Exemplo:
+
+```java
+@Bean
+static GrantedAuthorityDefaults grantedAuthorityDefaults() {
+    return new GrantedAuthorityDefaults("MEUPREFIXO_");
+}
+```
+
+Neste caso, o Spring Security reconhecerá Roles com o prefixo `MEUPREFIXO_` em vez de `ROLE_`.
+
+---
+
+### Exemplo de Configuração
+
+```java
+@Configuration
+@EnableMethodSecurity(prePostEnabled = true)
+public class SecurityConfig {
+
+    @Bean
+    GrantedAuthorityDefaults grantedAuthorityDefaults() {
+        return new GrantedAuthorityDefaults("APP_"); // Prefixo customizado
+    }
+
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests((requests) -> requests
+                .requestMatchers("/admin").hasRole("ADMIN")  // Role: APP_ADMIN
+                .requestMatchers("/cards").hasAuthority("VIEWCARDS")  // Authority: VIEWCARDS
+                .anyRequest().authenticated());
+        return http.build();
+    }
+}
+```
+
+---
+
+- Use **Authorities** para controles específicos e granulares.
+- Use **Roles** para abstrair responsabilidades mais amplas.
+- Customize o comportamento de Roles e Authorities para se adequar às necessidades do negócio, aproveitando as funcionalidades do Spring Security.
+
+### **Autorização com `hasRole()`**
+
+O método `.hasRole()` pode ser utilizado de duas formas: **globalmente** para todas as rotas ou **de forma granular** para métodos específicos.
+
+#### **Definindo Globalmente**
+
+Podemos definir as permissões de role globalmente, configurando a autorização no `SecurityFilterChain`:
+
+```java
+@Configuration
+@EnableMethodSecurity(prePostEnabled = true) // por padrão já é true
+public class ProjectSecurityConfiguration {
+
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests((request) -> request
+                .requestMatchers("/myAccount").hasRole("USER") // Role definida globalmente
+                .anyRequest().authenticated());
+        return http.build();
+    }
+}
+```
+
+#### **Definindo Granularmente**
+
+Para uma autorização mais granular, podemos usar a anotação `@PreAuthorize` diretamente nos controladores:
+
+```java
+@RestController
+@RequiredArgsConstructor
+@PreAuthorize("hasRole('USER')")
+public class AccountControllerImpl implements AccountController {
+
+    private final AccountService accountService;
+
+    @GetMapping("/myAccount")
+    public Accounts getAccountDetails(@RequestParam Long id) {
+        return accountService.findCustomerById(id);
+    }
+}
+```
+
+Nesse exemplo, apenas os usuários com a **role `ROLE_USER`** poderão acessar o método `getAccountDetails`.
+
+---
+
+A distinção entre **Authorities** e **Roles** no Spring Security permite um controle mais flexível sobre quem pode acessar o quê. **Authorities** são mais específicas e granularmente controladas, enquanto **Roles** representam grupos de ações e privilégios mais amplos. Ambas podem ser personalizadas e configuradas conforme a necessidade da aplicação.

@@ -265,13 +265,15 @@ CREATE TABLE `contact_messages`
 
 CREATE TABLE `authorities`
 (
-    `id`          int         not null auto_increment,
+    `id`          bigint         not null auto_increment,
     `customer_id` int         not null,
     `name`        varchar(50) not null,
     primary key (`id`),
     KEY `customer` (`customer_id`),
     constraint `authoritiesibfk_1` foreign key (`customer_id`) references `customer` (`customer_id`)
-),
+)
+
+SELECT * FROM customer
 
 INSERT INTO `authorities` (`customer_id`, `name`)
 values
@@ -280,5 +282,14 @@ values
     (1, 'VIEWLOANS'),
     (1, 'VIEWBALANCE')
 
+## Agora com ROLES:
 
-select * from accounts
+
+INSERT INTO `authorities` (`customer_id`, `name`)
+values
+    (2, 'ROLE_USER'),
+    (3, 'ROLE_ADMIN')
+
+
+
+select * from authorities

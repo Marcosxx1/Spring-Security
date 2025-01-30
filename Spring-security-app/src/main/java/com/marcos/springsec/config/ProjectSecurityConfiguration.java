@@ -18,7 +18,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 
 @Configuration
-@EnableMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity(prePostEnabled = true) // por padrão já é true
 public class ProjectSecurityConfiguration {
 
     private final String[] AUTHENTICATED_PATHS = {ACCOUNT, BALANCE, CARDS, LOANS};
@@ -38,15 +38,17 @@ public class ProjectSecurityConfiguration {
                         .ignoringRequestMatchers(CSRF_IGNORE)
                 ).addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class);
 
-        http.cors(cors -> cors.configurationSource(customConfigurationSource()));
+                http.cors(cors -> cors.configurationSource(customConfigurationSource()));
+                http.sessionManagement(session -> session.invalidSessionUrl(INVALID_SESSION).maximumSessions(1).maxSessionsPreventsLogin(true));
+
 */
 
         // Comentar o código acima, e descomentar o abaixo para testes
         http.csrf(AbstractHttpConfigurer::disable);
         http.cors(AbstractHttpConfigurer::disable);
-        http.sessionManagement(session -> session.invalidSessionUrl(INVALID_SESSION).maximumSessions(1).maxSessionsPreventsLogin(true));
 
         http.authorizeHttpRequests((request) -> request
+                //.requestMatchers(ACCOUNT).hasRole("USER")
                 .requestMatchers(AUTHENTICATED_PATHS).authenticated()
                 .requestMatchers(ALLOWED_PATHS).permitAll());
 

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@PreAuthorize("hasAuthority('VIEWACCOUNT')")
+@PreAuthorize("hasRole('USER')")
 public class AccountControllerImpl implements AccountController {
 
     private final AccountService accountService;
