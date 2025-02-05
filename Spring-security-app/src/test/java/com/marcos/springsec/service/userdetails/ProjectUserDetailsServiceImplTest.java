@@ -38,7 +38,7 @@ class ProjectUserDetailsServiceImplTest {
         authority.setName("ROLE_USER");
         customer.setAuthorities(List.of(authority));
 
-        when(customerService.getCustomerEmail(email)).thenReturn(customer);
+        when(customerService.getCustomerByEmail(email)).thenReturn(customer);
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
@@ -51,7 +51,7 @@ class ProjectUserDetailsServiceImplTest {
     @Test
     void loadUserByUsername_whenUserNotFound_thenThrowsException() {
         String email = "nonexistent@example.com";
-        when(customerService.getCustomerEmail(email))
+        when(customerService.getCustomerByEmail(email))
                 .thenThrow(new ResourceNotFoundException("User not found", "User not found"));
 
         assertThrows(UsernameNotFoundException.class,
@@ -66,7 +66,7 @@ class ProjectUserDetailsServiceImplTest {
         customer.setPassword("hashedPassword");
         customer.setAuthorities(Collections.emptyList());
 
-        when(customerService.getCustomerEmail(email)).thenReturn(customer);
+        when(customerService.getCustomerByEmail(email)).thenReturn(customer);
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 

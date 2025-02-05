@@ -1,6 +1,5 @@
 package com.marcos.springsec.service.userdetails;
 
-import com.marcos.springsec.domain.entity.Authorities;
 import com.marcos.springsec.domain.entity.Customer;
 import com.marcos.springsec.exception.exeptions.ResourceNotFoundException;
 import com.marcos.springsec.service.customer.CustomerService;
@@ -26,7 +25,7 @@ public class ProjectUserDetailsServiceImpl implements ProjectUserDetailsService 
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
-            Customer customer = customerService.getCustomerEmail(username);
+            Customer customer = customerService.getCustomerByEmail(username);
             List<GrantedAuthority> grantedAuthorities = customer.getAuthorities().stream()
                     .map(authority -> new SimpleGrantedAuthority(authority.getName()))
                     .collect(Collectors.toList());

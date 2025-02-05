@@ -1,10 +1,14 @@
 package com.marcos.springsec.config;
 
 import com.marcos.springsec.config.cors.CustomCorsConfigurationSource;
+import com.marcos.springsec.config.filter.AuthenticationFilter;
+import com.marcos.springsec.config.manager.CustomAuthenticationManager;
 import com.marcos.springsec.exception.CustomAccessDeniedHandler;
 import com.marcos.springsec.exception.CustomBasicEntryPoint;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -19,14 +23,19 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true) // por padrão já é true
+@AllArgsConstructor
 public class ProjectSecurityConfiguration {
 
     private final String[] AUTHENTICATED_PATHS = {ACCOUNT, BALANCE, CARDS, LOANS};
     private final String[] ALLOWED_PATHS = {CONTACT, NOTICES, ERROR, CUSTOMER, INVALID_SESSION, REGISTER, USER};
     private final String[] CSRF_IGNORE = {CONTACT, REGISTER};
 
+
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http, CustomBasicEntryPoint customBasicEntryPoint) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http,
+                                            CustomBasicEntryPoint customBasicEntryPoint,
+                                            AuthenticationFilter authenticationFilter) throws Exception {
+
 
 /*
         CsrfTokenRequestAttributeHandler csrfTokenRequestAttributeHandler = new CsrfTokenRequestAttributeHandler();
@@ -55,7 +64,7 @@ public class ProjectSecurityConfiguration {
         http.formLogin(withDefaults());
         http.httpBasic(httpBasic -> httpBasic.authenticationEntryPoint(customBasicEntryPoint));
         http.exceptionHandling(exception -> exception.accessDeniedHandler(new CustomAccessDeniedHandler()));
-
+        http.addFilter(authenticationFilter);
         return http.build();
     }
 
@@ -69,6 +78,16 @@ public class ProjectSecurityConfiguration {
     public CorsConfigurationSource customConfigurationSource() {
         return new CustomCorsConfigurationSource();
     }
+
+    @Bean
+    public AuthenticationFilter authenticationFilter(@Lazy CustomAuthenticationManager authenticationManager) {
+        AuthenticationFilter filter = new AuthenticationFilter(authenticationManager);
+        // Configuramos explicitamente o authenticationManager na superclasse
+        filter.setAuthenticationManager(authenticationManager);
+        return filter;
+    }
+
+
 }
 
 

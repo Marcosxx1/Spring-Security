@@ -7,7 +7,7 @@ import org.springframework.security.core.Authentication;
 
 public interface CustomerService {
 
-    Customer getCustomerEmail(String email);
+    Customer getCustomerByEmail(String email);
 
     String saveCustomer(CustomerRegistrationRequest request);
 

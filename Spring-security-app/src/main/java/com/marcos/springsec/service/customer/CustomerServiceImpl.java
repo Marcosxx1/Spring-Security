@@ -22,7 +22,7 @@ public class CustomerServiceImpl implements CustomerService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public Customer getCustomerEmail(String email) {
+    public Customer getCustomerByEmail(String email) {
         return customerRepository.findByEmail(email)
                 .orElseThrow( ExceptionFactory::resourceNotFoundException);
     }
